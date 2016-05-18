@@ -64,8 +64,14 @@ class Customer(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _('users')
         abstract = True
  
-
-class Calificacion(object):
+class Tarjeta(models.Model):
+    customer = models.OneToOneField()
+    tarjeta_credito = models.CharField()
+    tipo_tarjeta = models.CharField()
+    fecha_venc_tarjeta = models.DateField()
+    codigo_seguridad = models.IntegerField()
+        
+class Calificacion(models.Model):
     """docstring for Calificacion"""
        
 
