@@ -7,7 +7,7 @@ def home(request):
     #if request.user.is_authenticated():
         #return redirect("hospedajes:list_recent")
     #return redirect("customers:login")
-    return render(request,"base.html")
+    return render(request,"home.html")
 
 
 def close_popup(request):

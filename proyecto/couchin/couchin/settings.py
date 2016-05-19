@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'hospedajes',
     'reservas',
     'customers',
+    'bootstrapform',
     'home'
 )
 

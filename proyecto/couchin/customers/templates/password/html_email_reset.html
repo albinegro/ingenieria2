@@ -1,0 +1,11 @@
+<html doctype="html">
+    <body>
+        <title>Resetear Password</title>
+    </body>
+        <div>
+            <p>Someone asked for password reset for email{{ email }}. Follow the link below:</p>
+
+            <p><a href="{{ protocol }}://{{ domain }}{% url 'accounts:password_reset_confirm' uidb64=uid token=token %}">Click here</a></p>
+        </div>
+
+</html>

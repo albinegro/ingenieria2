@@ -9,12 +9,12 @@ urlpatterns = [
     # Examples:
     # url(r'^$', 'electro.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^login/$', login, name='login'),
+    url(r'^login/$', login,{'template_name': 'login/login.html'}, name='login'),
     url(r'^logout/$', logout, {'next_page': '/'}, name="logout"),
     url(r'^password_change/$', password_change,
         {
             'template_name': 'password/change.html',
-            'post_change_redirect': 'customer:password_change_done'
+            'post_change_redirect': 'customers:password_change_done'
         },
         name="password_change"),
     #user reset
@@ -40,5 +40,8 @@ urlpatterns = [
     url(r'^reset/done/$', password_reset_complete,
         {'template_name': 'password/reset_complete.html'},
         name='password_reset_complete'),
+    url(r'^select/$', views.select_account, name='select'),
+    url(r'^create/client/$', views.create_user_client, name='create_user_client'),
+    url(r'^create/premium/$', views.create_user_premium, name='create_user_premium'),
 
 ]
