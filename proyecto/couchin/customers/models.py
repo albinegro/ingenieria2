@@ -41,6 +41,7 @@ class UserManager(BaseUserManager):
 
 
 class Customer(AbstractBaseUser, PermissionsMixin):
+    tarjeta= models.ForeignKey('Tarjeta', null=True)
     nombre = models.CharField(_('Nombre'), max_length=30)
     apellido = models.CharField(_('Apellido'), max_length=30)
     correo = models.EmailField(_('Correo Electronico'), unique=True)
@@ -74,10 +75,6 @@ class Customer(AbstractBaseUser, PermissionsMixin):
         return self.correo
  
 class Tarjeta(models.Model):
-    
-   
-
-    client = models.OneToOneField(Customer)
     tarjeta_credito = models.CharField(max_length=16)
     tipo_tarjeta = models.CharField(max_length=250, choices=TIPOS_TARJETAS)
     fecha_venc_tarjeta = models.DateField()
