@@ -1,0 +1,17 @@
+{% extends 'user/select_account.html' %}
+{% load bootstrap %}
+{% block menus %}
+	
+        <h3>Podras actualizar tu cuenta por solo 80 $Ars</h3>
+		<div class="panel-body">
+			<form action="." method="post">
+				{% csrf_token %}
+				{{ form|bootstrap }}
+				<div class="form-group">
+		      		<button type="submit" class="btn btn-primary">Guardar</button>
+		    	</div>
+			</form>
+	    </div>
+	
+
+{% endblock menus %}

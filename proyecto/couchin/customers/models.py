@@ -41,7 +41,7 @@ class UserManager(BaseUserManager):
 
 
 class Customer(AbstractBaseUser, PermissionsMixin):
-    tarjeta= models.ForeignKey('Tarjeta', null=True)
+    tarjeta= models.ForeignKey('Tarjeta', null=True, blank=True)
     nombre = models.CharField(_('Nombre'), max_length=30)
     apellido = models.CharField(_('Apellido'), max_length=30)
     correo = models.EmailField(_('Correo Electronico'), unique=True)
@@ -83,7 +83,13 @@ class Tarjeta(models.Model):
         
 class Calificacion(models.Model):
     """docstring for Calificacion"""
-    
+    inquilino = models.ForeignKey(Customer,related_name="inqui")
+    propietario = models.ForeignKey(Customer,related_name="propie")
+    comentario_i  = models.TextField(null=True,blank=True)
+    comentario_p = models.TextField(null=True,blank=True)
+    i_puntos = models.IntegerField(null=True,blank=True)
+    p_putnos = models.IntegerField(null=True,blank=True)
+
        
 
 

@@ -1,33 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div style="text-align:center">
-      <h1>Seleccione un tipo de cuenta</h1>
+<div class="col-sm-3">
+   <ul class="list-group">
+	  <a href="{% url 'customers:info_account' user.id %}"class="list-group-item">Informacion de la cuenta</a>
+	  <a class="list-group-item" href="{% url 'customers:password_change'%}" >Cambiar Contraseña</a>
+	  <a class="list-group-item" href="#" >Modificar Datos</a>
+	  <a href="{% url 'customers:update_premium' user.id %}" class="list-group-item">Actualizar Cuenta</a>	
+    </ul>
+</div>
+<div class="col-sm-9">
+	<div class="content">
+	    	{% block menus %}
+	    	{% endblock menus %}
     </div>
-    </br>
-    <div class="container">
-	    <div class="row">
-		    <div class="col-sm-6">
-			    <div class="panel panel-default">
-			    	<div class="panel-heading">
-			    		Cliente Comun
-			    	</div>
-			        <div class="panel-body">
-			    		<span>Tendras acceso a todas la funcionalidades del sitio.Como reservar, publicar hospedajes, calificar y comentar.y mas sanata qeu hay qeu poner</span>
-			        </div>
-			        <div class="panel-footer"><a href="{% url 'customers:create_user_client' %}" class="open_modal" height-popup="60%">Crear Cuenta</a></div>
-				</div>
-		    </div>
-		    <div class="col-sm-6">
-				<div class="panel panel-primary">
-			    	<div class="panel-heading">
-			    		Cliente Premiun
-			    	</div>
-			        <div class="panel-body">
-			    		<span>Tendras acceso a todas la funcionalidades del sitio.Como reservar, publicar hospedajes, calificar y comentar.y mas sanata qeu hay qeu poner</span>
-			        </div>
-			        <div class="panel-footer"><a href="{% url 'customers:create_user_premium' %}" class="open_modal" height-popup="60%">Crear Cuenta</a></div>
-				</div>
-		    </div>
-		</div>
-    </div>
-{% endblock content %}
+</div>
+{% endblock %}

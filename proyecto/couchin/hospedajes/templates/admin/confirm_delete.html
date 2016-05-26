@@ -1,0 +1,15 @@
+{% extends 'base_popup.html' %}
+{% load bootstrap %}
+
+{% block content %}
+  <div class="container">
+        <p>Estas seguro que quieres eliminar este tipo?</p>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div class="form-group">
+          		<button type="submit" class="btn btn-primary">Eliminar</button>
+            </div>
+        </form>
+      </div>
+
+{% endblock content %}

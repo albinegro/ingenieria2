@@ -1,13 +1,17 @@
-{% extends 'base_popup.html' %}
+{% extends 'user/select_account.html' %}
 {% load bootstrap %}
-{% load i18n %}
 
-{% block content %}
-	<form action="." method="post" class="">
-		{% csrf_token %}
-		{{ form|bootstrap }}
-		<div class="form-group">
-      		<button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
-    	</div>
-	</form>
-{% endblock content %}
+{% block menus %}
+    <div>
+    	<h2>Cambiar Contraseña</h2>
+    </div>
+    <div class="container">
+		<form action="." method="post" class="">
+			{% csrf_token %}
+			{{ form|bootstrap }}
+			<div class="form-group">
+	      		<button type="submit" class="btn btn-primary">Guardar</button>
+	    	</div>
+		</form>
+    </div>
+{% endblock menus %}

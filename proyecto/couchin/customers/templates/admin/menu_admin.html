@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-sm-3">
+   <ul class="list-group">
+	  <a href="#"class="list-group-item">Usuario</a>
+	  <a class="list-group-item" href="#" >Hospedajes</a>
+	  <a class="list-group-item" href="{% url 'hospedajes:list_type' %}" >Tipos De Hospedajes</a>
+	  <a href="#" class="list-group-item">Listar</a>	
+    </ul>
+</div>
+<div class="col-sm-9">
+	<div class="content">
+	    	{% block menus_admin %}
+	    	{% endblock menus_admin %}
+    </div>
+</div>
+{% endblock %}
