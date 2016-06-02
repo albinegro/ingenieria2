@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load bootstrap %}
+{% load i18n %}
 
 {% block content %}
     <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-        <p>Your password if was changed</p>
+        <p>Su contraseña a sido cambiada</p>
             <div class="form-group">
-                <a href="{% url 'customers:login' %}" class="btn btn-primary">Login</a>
+                <a href="{% url 'customers:login' %}" class="btn btn-primary">Logearse</a>
             </div>
     </div>
 {% endblock content %}

@@ -3,15 +3,14 @@
 
 {% block content %}
   <div class="container">
-        <p>Estas seguro que quieres eliminar este tipo?</p>
         <form action="." method="post">
             {% csrf_token %}
+            {{ form|bootstrap }}
             <div class="form-group">
-          		<button type="submit" class="btn btn-primary">Eliminar</button>
-               <a href="{% url 'home:close_popup' %}"class="btn btn-primary" >Cancelar</a>
+          		<button type="submit" class="btn btn-primary">Agregar</button>
+                  <a href="{% url 'home:close_popup' %}"class="btn btn-primary" >Cancelar</a>
             </div>
         </form>
-            
       </div>
 
 {% endblock content %}

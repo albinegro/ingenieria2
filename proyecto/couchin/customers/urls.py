@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^select/$', views.select_account, name='select'),
     url(r'^create/client/$', views.create_user_client, name='create_user_client'),
     url(r'^update/premium/(?P<user_id>\d+)/$', views.update_premium, name='update_premium'),
+    url(r'^update/user/(?P<user_id>\d+)/$', views.update_user, name='update_user'),
     url(r'^info/account/(?P<user_id>\d+)/$', views.info_account, name='info_account'),
     url(r'^admin/conf/$', views.admin_conf, name='admin_conf'),
 

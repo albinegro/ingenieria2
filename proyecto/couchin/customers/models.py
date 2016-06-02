@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 from django.db import models
-
+from django.core.validators import MinValueValidator
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, PermissionsMixin, User)
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -19,20 +20,20 @@ class UserManager(BaseUserManager):
     def get_queryset(self):
         return super(UserManager, self).get_queryset().filter(is_active=True)
 
-    def create_user(self, correo, password=None):
-        if not correo:
+    def create_user(self, email, password=None):
+        if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
-            correo=self.normalize_email(correo),
+            email=self.normalize_email(email),
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, correo, password):
-        user = self.create_user(correo, password=password)
+    def create_superuser(self, email, password):
+        user = self.create_user(email, password=password)
         user.is_staff = True
         user.is_superuser = True
         user.admin = True
@@ -44,15 +45,17 @@ class Customer(AbstractBaseUser, PermissionsMixin):
     tarjeta= models.ForeignKey('Tarjeta', null=True, blank=True)
     nombre = models.CharField(_('Nombre'), max_length=30)
     apellido = models.CharField(_('Apellido'), max_length=30)
-    correo = models.EmailField(_('Correo Electronico'), unique=True)
+    email = models.EmailField(_('Correo Electronico'), unique=True)
     admin = models.BooleanField(default=False)
     premium = models.BooleanField(default=False)
     cliente = models.BooleanField(default=False)
-    tel = models.CharField(_('Telefono'),max_length=14, null=True, blank=True)
+    tel = models.IntegerField(_('Telefono'), null=True, blank=True)
     direccion = models.CharField(max_length=30)
     fecha_premium = models.DateTimeField(null=True, blank=True)
-    fecha_n = models.DateField(_('Fecha Nacimiento'), null=True, blank=True )
-    code_postal = models.CharField(_('Codigo Postal'),max_length=10)
+    fecha_n = models.DateField(_('Fecha Nacimiento'), null=True, blank=True)
+    code_postal = models.IntegerField(_('Codigo Postal'), null=True, blank=True,  validators=[
+            MinValueValidator(1000)
+        ])
     is_staff = models.BooleanField(_('staff status'), default=False,
         help_text=_('Designates whether the user can log into this admin '
                     'site.'))
@@ -63,7 +66,7 @@ class Customer(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'correo'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     class Meta:
@@ -72,13 +75,17 @@ class Customer(AbstractBaseUser, PermissionsMixin):
         abstract = False
 
     def get_short_name(self):
-        return self.correo
+        return self.email
  
 class Tarjeta(models.Model):
-    tarjeta_credito = models.CharField(max_length=16)
+    tarjeta_credito = models.IntegerField(validators=[
+            MinValueValidator(10000000)
+        ])
     tipo_tarjeta = models.CharField(max_length=250, choices=TIPOS_TARJETAS)
     fecha_venc_tarjeta = models.DateField()
-    codigo_seguridad = models.CharField(max_length=3)
+    codigo_seguridad = models.IntegerField(validators=[
+            MinValueValidator(100)
+        ])
     premiun_pago = models.CharField(max_length=14)
         
 class Calificacion(models.Model):

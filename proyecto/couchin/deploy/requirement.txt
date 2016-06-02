@@ -1,2 +1,4 @@
 Django==1.8
 django-bootstrap-form==3.2
+Pillow==2.9.0
+django-rosetta==0.7.8

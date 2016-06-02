@@ -1,11 +1,11 @@
 {% extends 'user/select_account.html' %}
 {% load bootstrap %}
+{% load i18n %}
 
 {% block menus %}
-    <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-      <p>Your password it was changed</p>
-      <div class="form-group">
-                <a href="{% url 'home:home' %}" class="btn btn-primary">Cerrar</a>
-            </div>
+   
+    <h3>Su contraseña a sido cambiada</h3>
+    <div class="form-group">
+                <a href="{% url 'customers:logout' %}" class="btn btn-primary">Aceptar</a>
     </div>
 {% endblock menus %}

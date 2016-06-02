@@ -1,20 +1,7 @@
 {% extends 'admin/menu_admin.html' %}
 {% load bootstrap %}
 {% block menus_admin %}
-	    <div>
         <h2>Tipo de Hospedajes</h2>
-			<form action="." method="post">
-				{% csrf_token %}
-				  <div class="row" >
-			        <div class="col-xs-4">
-						{{ form|bootstrap }}
-			       </div>
-			       <div class="col-xs-4">	
-						<div class="form-group" style="padding-top: 11%;">
-				      		<button type="submit" class="btn btn-primary">Guardar</button>
-				    	</div>
-			       </div>
-			</form>
 		 <table class="table">
 		    <thead>
 		      <tr>
@@ -24,7 +11,7 @@
 		      </tr>
 		    </thead>
 		    <tbody>
-		    	{% for tipo in tipos%}
+		    	{% for tipo in tipos %}
 			      <tr>
 			        <td>{{tipo.descripcion}}</td>
 			        <td>{% if tipo.activo %}
@@ -34,7 +21,7 @@
                         {% endif %}
 			        </td>
 			        <td>
-			        	<a href="{% url 'hospedajes:edit_type' tipo.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+			        	<a href="{% url 'hospedajes:edit_type' tipo.id %}" class=" open_modal" height-popup="40%" ><span class="glyphicon glyphicon-pencil"></span></a>
                         <a class="open_modal" height-popup="40%" href="{% url 'hospedajes:delete_type' tipo.id %}">
                             {% if tipo.activo %}
                         		<span class="glyphicon glyphicon-trash"></span>
@@ -44,12 +31,16 @@
                         </a>
 			        </td>
 			      </tr>
+			    {% empty %}
+			      <tr>
+			          <td>No hay ningun tipo de hospedaje</td>
+			      </tr>
 			    {% endfor %}
 		    </tbody>
 		  </table>
-</div>
 
-	    </div>
+						
+<a href="{% url 'hospedajes:add_type' %}" height-popup="40%"type="submit" class="btn btn-primary open_modal">Agregar</a>
 	
 
 {% endblock menus_admin %}

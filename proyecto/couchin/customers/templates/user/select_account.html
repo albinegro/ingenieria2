@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block content %}
 <div class="col-sm-3">
    <ul class="list-group">
 	  <a href="{% url 'customers:info_account' user.id %}"class="list-group-item">Informacion de la cuenta</a>
 	  <a class="list-group-item" href="{% url 'customers:password_change'%}" >Cambiar Contraseña</a>
-	  <a class="list-group-item" href="#" >Modificar Datos</a>
+	  <a class="list-group-item" href="{% url 'customers:update_user' user.id %}" >Modificar Datos</a>
 	  <a href="{% url 'customers:update_premium' user.id %}" class="list-group-item">Actualizar Cuenta</a>	
     </ul>
 </div>

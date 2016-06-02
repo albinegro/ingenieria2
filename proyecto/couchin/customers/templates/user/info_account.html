@@ -1,4 +1,62 @@
 {% extends 'user/select_account.html' %}
+{% load i18n %}
 {% load bootstrap %}
 {% block menus %}
+    <h3>Informacion de Cuenta</h3>
+    <div class="panel panel-default">
+	    <div class="panel-body">
+	    	<h3>Datos Personales</h3>
+		     <div class="row" >
+		     	<div class="col-xs-6">
+		        	<h4>Nombre y Apellido: {{ customer.nombre }} {{ customer.apellido }}</h4>
+		        </div>
+			
+		    </div>
+		     <div class="row" >
+		     	<div class="col-xs-6">
+		    	   <h4>Fecha de Naciomento: {{ customer.fecha_n }}</h4>
+		        </div>
+		    </div>
+
+		     <div class="row" >
+		        <div class="col-xs-4">
+		        	<h4>Telefono: {{ customer.tel }}</h4>
+		       </div>
+		    </div>
+
+		     <div class="row" >
+		        <div class="col-xs-4">
+		        	<h4>Dirección: {{ customer.direccion }}</h4>
+		       </div>
+		    </div>
+		     <div class="row" >
+		        <div class="col-xs-4">
+		        	<h4>Codigo Postal: {{ customer.code_postal }}</h4>
+		       </div>
+		    </div>
+		    <h3>Datos de Cuenta</h3> 
+		    <div class="row" >
+		        <div class="col-xs-4">
+		        	<h4>Email: {{ customer.email }}</h4>
+		       </div>
+		    </div>
+		      <div class="row" >
+		        <div class="col-xs-4">
+		        	<h4>Constraseña:*********</h4>
+		       </div>
+		    </div>
+		    {% if user.premium %}
+			      <div class="row" >
+			        <div class="col-xs-4">
+			        	<h4> Fecha de Premium:{{ customer.fecha_premium}}</h4>
+			        </div>
+			      </div>
+			      <div class="row" >
+			        <div class="col-xs-4">
+			        	<h4>Pago:{{ customer.tarjeta.premiun_pago }}</h4>
+			        </div>
+			      </div>
+		    {% endif %}
+	    </div>
+    </div>
 {% endblock menus %}

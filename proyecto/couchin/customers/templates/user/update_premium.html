@@ -1,17 +1,32 @@
 {% extends 'user/select_account.html' %}
 {% load bootstrap %}
+{% load i18n %}
 {% block menus %}
-	
-        <h3>Podras actualizar tu cuenta por solo 80 $Ars</h3>
-		<div class="panel-body">
-			<form action="." method="post">
-				{% csrf_token %}
-				{{ form|bootstrap }}
-				<div class="form-group">
-		      		<button type="submit" class="btn btn-primary">Guardar</button>
-		    	</div>
-			</form>
-	    </div>
+	    {% if not user.premium %}
+	        <h3>Podras actualizar tu cuenta por solo 80 $Ars</h3>
+			<div class="panel-body">
+				<form action="." method="post">
+					{% csrf_token %}
+					{{ form.tarjeta_credito|bootstrap }}
+					{{ form.tipo_tarjeta|bootstrap }}
+					<div class="row" >
+				        <div class="col-xs-4">
+		                	{{ form.mes|bootstrap }}
+				       </div>
+				       <div class="col-xs-4">
+		            		{{ form.ano|bootstrap }}
+					
+				       </div>
+				    </div>
+					{{ form.codigo_seguridad|bootstrap }}
+					<div class="form-group">
+			      		<button type="submit" class="btn btn-primary">Guardar</button>
+			    	</div>
+				</form>
+		    </div>
+	    {% else %}
+	         <h3>Usted ya actualizo su cuenta a premium</h3>
+	    {% endif %}
 	
 
 {% endblock menus %}
