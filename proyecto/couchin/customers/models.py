@@ -10,9 +10,20 @@ TIPOS_TARJETAS = (
 
         (("visa"),("Visa")),
         (("mastercard"),("MasterCard")),
+        (("american"),("AmericanExpress")),
+        (("naranja"),("Naranja")),
+        (("cabal"),("CABAL")),
+        (("tarjeta_shopping"),("TarjetaShopping")),
+        (("argencard"),("ArgenCard")),
+        (("cencosud"),("Cencosud")),
+
     
         )
+CIVIL = (
 
+        (("soltero/a"),("Soltero/a")),
+        (("casado/a"),("Casado/a")),
+        )
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -37,11 +48,14 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.admin = True
+        user.fecha_n = datetime.datetime.now()
+        user.direccion = "admin"
         user.save(using=self._db)
         return user
 
 
 class Customer(AbstractBaseUser, PermissionsMixin):
+
     tarjeta= models.ForeignKey('Tarjeta', null=True, blank=True)
     nombre = models.CharField(_('Nombre'), max_length=30)
     apellido = models.CharField(_('Apellido'), max_length=30)
@@ -50,7 +64,10 @@ class Customer(AbstractBaseUser, PermissionsMixin):
     premium = models.BooleanField(default=False)
     cliente = models.BooleanField(default=False)
     tel = models.IntegerField(_('Telefono'), null=True, blank=True)
+    estado_civil = models.CharField(_('Estado Civil'),max_length=50,choices=CIVIL, null=True, blank=True)
     direccion = models.CharField(max_length=30)
+    religion = models.CharField(_('Religion'),max_length=30,  null=True, blank=True)
+    temp_pass = models.BooleanField(default=False)
     fecha_premium = models.DateTimeField(null=True, blank=True)
     fecha_n = models.DateField(_('Fecha Nacimiento'), null=True, blank=True)
     code_postal = models.IntegerField(_('Codigo Postal'), null=True, blank=True,  validators=[
@@ -79,7 +96,7 @@ class Customer(AbstractBaseUser, PermissionsMixin):
  
 class Tarjeta(models.Model):
     tarjeta_credito = models.IntegerField(validators=[
-            MinValueValidator(10000000)
+            MinValueValidator(1000000000000000)
         ])
     tipo_tarjeta = models.CharField(max_length=250, choices=TIPOS_TARJETAS)
     fecha_venc_tarjeta = models.DateField()

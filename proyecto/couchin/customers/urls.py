@@ -11,7 +11,7 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
     url(r'^login/$', login,{'template_name': 'login/login.html'}, name='login'),
     url(r'^logout/$', logout, {'next_page': '/'}, name="logout"),
-    url(r'^password_change/$', password_change,
+    url(r'^password_change/$', views.password_change,
         {
             'template_name': 'password/change.html',
             'post_change_redirect': 'customers:password_change_done'
@@ -23,11 +23,7 @@ urlpatterns = [
             'template_name': 'password/change_done.html',
         },
         name="password_change_done"),
-    url(r'^password_reset/$', password_reset, {
-        'template_name': 'password/reset.html',
-        'email_template_name': 'password/email_reset.html',
-        'post_reset_redirect': 'customers:password_reset_done',
-        'html_email_template_name': 'password/html_email_reset.html'},
+    url(r'^password_reset/$', views.reset_password,
         name="password_reset"),
     url(r'^password_reset/done/$', password_reset_done,
         {'template_name': 'password/done.html'},

@@ -6,6 +6,8 @@ from django.core.validators import MaxValueValidator
 
 
 class TarjetaForm(ModelForm):
+	codigo_seguridad = forms.IntegerField(error_messages={'invalid':"Ingrese un codigo de seguridad valido", 'min_value':'Ingrese un codigo de 3 caracteres'})
+	tarjeta_credito = forms.IntegerField(error_messages={'invalid':"Ingrese un numero de tarjeta valido", 'min_value':'Ingrese un codigo de 16 caracteres'})
 	class Meta:
 		model = Tarjeta
 		exclude =['premiun_pago', 'fecha_venc_tarjeta']
@@ -20,12 +22,13 @@ class TarjetaForm(ModelForm):
 
 
 class TarjetaDateForm(TarjetaForm):
-	ano = forms.ChoiceField(choices=[(str(i),str(i)) for i in range(2016,2028,2)],label="Año")
+	ano = forms.ChoiceField(choices=[(str(i),str(i)) for i in range(2017,2028,1)],label="Año")
 	mes = forms.ChoiceField(choices=[(str(i),str(i)) for i in range(1,13)])
 
 
 
 class CustomerForm(ModelForm):
+	code_postal = forms.IntegerField(error_messages={'invalid':"Ingrese un codigo postal valido", 'min_value':'Ingrese un codigo de 4 caracteres'})
 	class Meta:
 		model = Customer
 		fields = ["nombre",
@@ -59,7 +62,9 @@ class CustomerEditForm(ModelForm):
 				 "email", 
 				 "tel",
 				 "direccion",
-				 "code_postal"
+				 "code_postal",
+				 "estado_civil",
+				 "religion",
 		]
 
 	def __init__(self, *args, **kwargs):
@@ -68,18 +73,28 @@ class CustomerEditForm(ModelForm):
 		self.fields['code_postal'].widget =forms.NumberInput(attrs={'maxlength':4})
 
 class CustomerDateEditForm(CustomerEditForm):
-	ano = forms.ChoiceField(choices=[(str(i),str(i)) for i in range(1970,2018)], label="Año")
+	ano = forms.ChoiceField(choices=[(str(i),str(i)) for i in range(1970,2015)], label="Año")
 	mes = forms.ChoiceField(choices=[(str(i),str(i)) for i in range(1,13)])
 	dia = forms.ChoiceField(choices=[(str(i),str(i)) for i in range(1,32)])
 
+class ResetEmailForm(forms.Form):
+	email = forms.EmailField(label='Correo Electrónico')
+	uuid = forms.CharField(widget = forms.HiddenInput(), required = False)
 
+	def clean(self):
+		cleaned_data = super(ResetEmailForm, self).clean()
+
+		email = cleaned_data.get("email")
+		if not Customer.objects.filter(email=email).exists():
+			raise forms.ValidationError("No existe un usuario con este email.")
+		return cleaned_data
 
 
 class PremiumForm(CustomerForm):
 	tarjeta_credito = forms.CharField()
 	tipo_tarjeta = forms.ChoiceField(choices=TIPOS_TARJETAS)
 	fecha_venc_tarjeta = forms.DateField()
-	codigo_seguridad = forms.IntegerField(max_value=999)
+	codigo_seguridad = forms.IntegerField(error_messages={'invalid':"ingrese un codigo postal valido"})
 
 
 

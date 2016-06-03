@@ -6,6 +6,7 @@
     <div class="panel panel-default">
 	    <div class="panel-body">
 	    	<h3>Datos Personales</h3>
+	    	<hr>
 		     <div class="row" >
 		     	<div class="col-xs-6">
 		        	<h4>Nombre y Apellido: {{ customer.nombre }} {{ customer.apellido }}</h4>
@@ -13,14 +14,14 @@
 			
 		    </div>
 		     <div class="row" >
-		     	<div class="col-xs-6">
-		    	   <h4>Fecha de Naciomento: {{ customer.fecha_n }}</h4>
+		     	<div class="col-xs-8">
+		    	   <h4>Fecha de Nacimiento: {{ customer.fecha_n }}</h4>
 		        </div>
 		    </div>
 
 		     <div class="row" >
 		        <div class="col-xs-4">
-		        	<h4>Telefono: {{ customer.tel }}</h4>
+		        	<h4>Teléfono: {% if customer.tel %}{{ customer.tel }} {%endif%}</h4>
 		       </div>
 		    </div>
 
@@ -31,32 +32,44 @@
 		    </div>
 		     <div class="row" >
 		        <div class="col-xs-4">
-		        	<h4>Codigo Postal: {{ customer.code_postal }}</h4>
+		        	<h4>Código Postal:  {% if customer.code_postal %} {{ customer.code_postal }} {%endif%}</h4>
 		       </div>
 		    </div>
+		    {% if customer.estado_civil %}
+			    <div class="row" >
+			        <div class="col-xs-4">
+			        	<h4>Estado Civil: {{ customer.estado_civil }}</h4>
+			       </div>
+			    </div>
+		    {% endif %}
+
+		    {% if customer.religion %}
+			    <div class="row" >
+			        <div class="col-xs-4">
+			        	<h4>Religion : {{ customer.religion }}</h4>
+			       </div>
+			    </div>
+		    {% endif %}
 		    <h3>Datos de Cuenta</h3> 
+		    <hr>
 		    <div class="row" >
 		        <div class="col-xs-4">
 		        	<h4>Email: {{ customer.email }}</h4>
 		       </div>
 		    </div>
-		      <div class="row" >
-		        <div class="col-xs-4">
-		        	<h4>Constraseña:*********</h4>
-		       </div>
-		    </div>
+		    
 		    {% if user.premium %}
 			      <div class="row" >
-			        <div class="col-xs-4">
-			        	<h4> Fecha de Premium:{{ customer.fecha_premium}}</h4>
+			        <div class="col-xs-8">
+			        	<h4> Fecha de Premium: {{ customer.fecha_premium.date}}</h4>
 			        </div>
 			      </div>
 			      <div class="row" >
 			        <div class="col-xs-4">
-			        	<h4>Pago:{{ customer.tarjeta.premiun_pago }}</h4>
+			        	<h4>Pago: ${{ customer.tarjeta.premiun_pago }}</h4>
 			        </div>
 			      </div>
 		    {% endif %}
 	    </div>
     </div>
-{% endblock menus %}
+{% endblock menus %}	

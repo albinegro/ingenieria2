@@ -6,14 +6,14 @@
 	<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-			    		Iniciar sesion
+			    		Iniciar Sesión
 			</div>
 			<div class="panel-body">
 				<form action="." method="post">
 					{% csrf_token %}
 					{{ form|bootstrap }}
 					<div class="form-group">
-			      		<button type="submit" class="btn btn-primary">Logearse</button>
+			      		<button type="submit" class="btn btn-primary">Iniciar Sesión</button>
 			      		<a href="{% url 'customers:password_reset' %}">Olvide la contraseña</a>
 			    	</div>
 				</form>

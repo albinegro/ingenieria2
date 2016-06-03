@@ -3,27 +3,87 @@
 {% load i18n %}
 {% load staticfiles %}
 {% block content %}
-<h3> Detalles de hospedaje</h3>
-<div class="panel panel-default">
-		<div class="panel-body">
+<div class="container"> 
+	<h3> Detalles de hospedaje</h3>
+	<div class="panel panel-default">
+			<div class="panel-body">
 
-			<div class="media">
-			  <div class="media-left media-middle">
-			  	  <div class="col-xs-3">
-			      	<img class="media-object" src="" alt="...">
-			  	  </div>
-			  </div>
-			  <div class="media-body">
-			    <h4 class="media-heading">Habitacion Paraiso</h4>
-			    <p>En la ciudad de Mar del Plata. Ubicada a 3 calles de la avenida principal y a 5 de la playa. Cuenta con todos los servicion e incluye cama de 2 plazas</p>
-			    <p>Tipo de Hospedaje: Habitacion </p>
-			    <p>Localidad: Buenos Aires</p>
-			    <p>Ciudad: Mar del Plata</p>
-			    <p>Calle: Rodriguez 1573</p>
-			    <p>Capacidad: 2 personas</p>
-			    <a class="btn btn-primary" href="#">Reservar</a>
-			  </div>
-	    </div>
+				
+				  	<div class="col-xs-6 ">
+				      	    <img class="media-object " style="max-width: 95%;" src="{% static 'img/privates2.jpg' %}" alt="...">
+				  	</div>
+			        <div class="col-xs-6 ">
+					    <h4 class="media-heading">Habitacion Paraiso</h4>
+					    <p>En la ciudad de Mar del Plata. Ubicada a 3 calles de la avenida principal y a 5 de la playa. Cuenta con todos los servicion e incluye cama de 2 plazas</p>
+					    <p>Tipo de Hospedaje: Habitacion </p>
+					    <p>Teléfono: 445432323</p>
+					    <p>Localidad: Buenos Aires</p>
+					    <p>Ciudad: Mar del Plata</p>
+					    <p>Calle: Rodriguez 1573</p>
+					    <p>Capacidad: 2 personas</p>
+				  		{% if user.premium or user.admin or user.client %}
+					    	<a class="btn btn-primary" href="#">Reservar</a>
+				      		
+				      	{% else %}
+				      	    <a class="btn btn-primary" href="{% url 'customers:login' %}">Reservar</a>
+				      	{% endif %}
+					    <span class="glyphicon glyphicon-thumbs-up" style="color:green; margin-left:4px">80%</span>
+				  </div>
+
+		    </div>
+	</div>
+	<h3>Preguntas</h3>
+	<div>
+	    <textarea style="width: 912px; height: 78px;"></textarea>
+	    {% if user.premium or user.admin or user.client %}
+		    <a href="#" class="btn btn-primary">Comentar</a>	      		
+      	{% else %}
+      	    <a href="{% url 'customers:login' %}" class="btn btn-primary">Comentar</a>
+      	{% endif %}
+	     
+
+	</div>
+    </br>
+    </br>
+	<div class="panel panel-default">
+		    <div class="panel-heading">
+			    Pregunta #1
+			</div>
+			<div class="panel-body">
+				<p>-Robertito Funes: Tiene disponibilidad para la semana que viene?..</p>
+	        </div>
+	        <div class="panel-heading">
+			    Respuesta #1
+			</div>
+			<div class="panel-body">
+				<p>-Propietario: Para Que dia? Consulta las fechas disponibles de reservas saludos</p>
+	        </div>
+	</div>
+	</br>
+    <div class="panel panel-default">
+	        <div class="panel-heading">
+			    Pregunta #2
+			</div>
+			<div class="panel-body">
+				<p>-Carola Casini: Pueden entrar 4 personas?..</p>
+	        </div>
+	</div>
+	</br>
+    <div class="panel panel-default">
+	        <div class="panel-heading">
+			    Pregunta #3
+			</div>
+			<div class="panel-body">
+				<p>-Osvaldo Daniel: Aceptan pago con Tarjeta?..</p>
+	        </div>
+	        <div class="panel-heading">
+			    Respuesta #3
+			</div>
+			<div class="panel-body">
+				<p>-Propietario: No me gusta declarar mis impuestos, efectivo solamente. Saludos</p>
+	        </div>
+
+	</div>
 </div>
 
 {% endblock content %}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rosetta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-02 00:19+0000\n"
+"POT-Creation-Date: 2016-06-02 22:39+0000\n"
 "PO-Revision-Date: 2008-09-22 11:02\n"
 "Last-Translator: Admin Admin <admin@admin.com>\n"
 "Language-Team: XX <LL@li.org>\n"
@@ -25,60 +25,60 @@ msgstr ""
 msgid "Spanish"
 msgstr ""
 
-#: customers/models.py:45
+#: customers/models.py:46
 msgid "Nombre"
 msgstr ""
 
-#: customers/models.py:46
+#: customers/models.py:47
 msgid "Apellido"
 msgstr ""
 
-#: customers/models.py:47
+#: customers/models.py:48
 msgid "Correo Electronico"
 msgstr ""
 
-#: customers/models.py:51
+#: customers/models.py:52
 msgid "Telefono"
 msgstr ""
 
-#: customers/models.py:54
+#: customers/models.py:55
 msgid "Fecha Nacimiento"
 msgstr ""
 
-#: customers/models.py:55
+#: customers/models.py:56
 msgid "Codigo Postal"
 msgstr ""
 
-#: customers/models.py:56
+#: customers/models.py:59
 msgid "staff status"
 msgstr ""
 
-#: customers/models.py:57
+#: customers/models.py:60
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: customers/models.py:59
+#: customers/models.py:62
 msgid "active"
 msgstr ""
 
-#: customers/models.py:60
+#: customers/models.py:63
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: customers/models.py:62
+#: customers/models.py:65
 msgid "date joined"
 msgstr ""
 
-#: customers/models.py:70
+#: customers/models.py:73
 msgid "user"
 msgstr ""
 
-#: customers/models.py:71
+#: customers/models.py:74
 msgid "users"
 msgstr ""
 
-#: customers/templates/password/reset_confirm.html:7
+#: customers/templates/password/reset_confirm.html:8
 msgid "Por favor ingrese su nueva contraseña"
 msgstr ""
