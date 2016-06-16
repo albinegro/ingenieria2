@@ -4,24 +4,24 @@
 {% load staticfiles %}
 {% block content %}
  <div class="row">
-
-    <div class="col-sm-4 col-lg-4 col-md-4">
-        <div class="thumbnail">
-            {% if user.admin or user.premium %}
-                <img src="{% static 'img/privates.jpg' %}" alt="">
-            {% else %}
-                <img src="{% static 'img/none.jpg' %}" alt="">
-            {% endif %}
-            <div class="caption">
-                <h4>Habitacion Paraiso</a>
-                </h4>
-                <p>En la Ciudad de mar del plata. Esta a 3 cuadras de la calle...</p>
-                <a class="btn btn-primary pull-right" href="{% url 'hospedajes:view_detail' %}">ver Detalle</a>
+    {% for hospedaje in hospedajes %}
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="thumbnail">
+                {% if user.admin or user.premium %}
+                    <img src="{{hospedaje.foto_1}}" alt="">
+                {% else %}
+                    <img src="{% static 'img/default.png' %}" alt="">
+                {% endif %}
+                <div class="caption">
+                    <h4>{{hospedaje.titulo}}</h4>
+                    <p>{{hospedaje.descripcion}}</p>
+                    <a class="btn btn-primary pull-right" href="{% url 'hospedajes:view_detail' hospedaje.id %}">ver Detalle</a>
+                </div>
+                    </br>
+            
             </div>
-                </br>
-        
-        </div>
     </div>
-
+    {% endfor %}
+   
     
 {% endblock content %}

@@ -58,11 +58,7 @@
                     {% if user.is_authenticated %}
                         {% if user.admin %}
                             <li>
-                                <a href="{% url 'customers:admin_conf' %}">Configuracion</a>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a href="#">Cuenta</a>
+                                <a href="{% url 'customers:admin_conf' %}">Configuración</a>
                             </li>
                         {% endif %}
                         <li>
@@ -73,7 +69,8 @@
                                 <span class="caret"></span>
                               </a>
                               <ul class="dropdown-menu" aria-labelledby="signin-user">
-                                <li><a href="{% url 'customers:info_account' user.id %}" >Informacion de cuenta</a></li>
+                                <li><a href="{% url 'hospedajes:my_hospedajes' user.id %}" >Información de Cuenta</a></li>
+                                 <li><a href="{% url 'customers:info_account' user.id %}" >Configuración de Cuenta</a></li>
                                 <li><a href="{% url 'customers:logout'%}">Cerrar Sesión</a></li>
                               </ul>
                             

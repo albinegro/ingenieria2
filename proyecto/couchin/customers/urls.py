@@ -9,7 +9,7 @@ urlpatterns = [
     # Examples:
     # url(r'^$', 'electro.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^login/$', login,{'template_name': 'login/login.html'}, name='login'),
+    url(r'^login/$', login,{'template_name':'login/login.html'}, name='login'),
     url(r'^logout/$', logout, {'next_page': '/'}, name="logout"),
     url(r'^password_change/$', views.password_change,
         {
@@ -37,6 +37,7 @@ urlpatterns = [
         {'template_name': 'password/reset_complete.html'},
         name='password_reset_complete'),
     url(r'^select/$', views.select_account, name='select'),
+    url(r'^change/acept/(?P<user_id>\d+)/$', views.acept_change, name='acept_change'),
     url(r'^create/client/$', views.create_user_client, name='create_user_client'),
     url(r'^update/premium/(?P<user_id>\d+)/$', views.update_premium, name='update_premium'),
     url(r'^update/user/(?P<user_id>\d+)/$', views.update_user, name='update_user'),

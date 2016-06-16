@@ -23,6 +23,7 @@ CIVIL = (
 
         (("soltero/a"),("Soltero/a")),
         (("casado/a"),("Casado/a")),
+        (("viudo/a"),("Viudo/a")),
         )
 
 # Create your models here.
@@ -59,18 +60,18 @@ class Customer(AbstractBaseUser, PermissionsMixin):
     tarjeta= models.ForeignKey('Tarjeta', null=True, blank=True)
     nombre = models.CharField(_('Nombre'), max_length=30)
     apellido = models.CharField(_('Apellido'), max_length=30)
-    email = models.EmailField(_('Correo Electronico'), unique=True)
+    email = models.EmailField('Correo Electrónico', unique=True)
     admin = models.BooleanField(default=False)
     premium = models.BooleanField(default=False)
     cliente = models.BooleanField(default=False)
-    tel = models.IntegerField(_('Telefono'), null=True, blank=True)
+    tel = models.IntegerField('Teléfono', null=True, blank=True)
     estado_civil = models.CharField(_('Estado Civil'),max_length=50,choices=CIVIL, null=True, blank=True)
-    direccion = models.CharField(max_length=30)
-    religion = models.CharField(_('Religion'),max_length=30,  null=True, blank=True)
+    direccion = models.CharField('Dirección',max_length=30)
+    religion = models.CharField('Religión',max_length=30,  null=True, blank=True)
     temp_pass = models.BooleanField(default=False)
     fecha_premium = models.DateTimeField(null=True, blank=True)
     fecha_n = models.DateField(_('Fecha Nacimiento'), null=True, blank=True)
-    code_postal = models.IntegerField(_('Codigo Postal'), null=True, blank=True,  validators=[
+    code_postal = models.IntegerField('Código Postal', null=True, blank=True,  validators=[
             MinValueValidator(1000)
         ])
     is_staff = models.BooleanField(_('staff status'), default=False,

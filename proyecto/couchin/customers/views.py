@@ -1,14 +1,14 @@
+from django.contrib.auth import logout
 import string
 import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import csrf_exempt
-from core.libs import check_temporal
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404, render, resolve_url
 from .models import Tarjeta, Customer
-from .forms  import TarjetaForm, CustomerForm, CustomerDateForm, TarjetaDateForm, CustomerDateEditForm, ResetEmailForm
+from .forms  import TarjetaForm, CustomerForm, CustomerDateForm, TarjetaDateForm, CustomerDateEditForm, ResetEmailForm, UuidForm
 from django.core.urlresolvers import reverse
 from random import sample, choice
 from django.template.response import TemplateResponse
@@ -56,38 +56,60 @@ def password_change(request,
 	return TemplateResponse(request, template_name, context)
 
 
-
-def reset_password(request):
-	form = ResetEmailForm(request.POST or None)
+def acept_change(request, user_id):
+	form = UuidForm(request.POST or None)
 	if form.is_valid():
-		customer = Customer.objects.get(email=form.cleaned_data["email"])
+		customer = get_object_or_404(Customer, id=user_id)
 		customer.temp_pass= True
 		customer.set_password(form.cleaned_data["uuid"])
 		customer.save()
 		return redirect(reverse("customers:login"))
 	cont = ''.join(choice(chars) for _ in range(8))
 	form.initial['uuid'] = cont
-	return render(request, "password/reset.html", {"form":form, "cont_temporal":cont})
+	return render(request, "password/acep_change.html", {"form":form, "cont_temporal":cont})
+
+
+def reset_password(request):
+	form = ResetEmailForm(request.POST or None)
+	if form.is_valid():
+		customer = Customer.objects.get(email=form.cleaned_data["email"])
+		return redirect(reverse("customers:acept_change",kwargs={"user_id":customer.id}))
+	return render(request, "password/reset.html", {"form":form})
 
 @login_required
-@user_passes_test(check_temporal)
 # Create your views here
 def select_account(request):
+	try:
+		if request.user.temp_pass:
+			logout(request)
+			return redirect(reverse("customers:login"))
+	except Exception:
+		pass
 	return render(request, "user/select_account.html")
 
 
 # Create your views here
 @login_required
-@user_passes_test(check_temporal)
 def info_account(request,user_id):
+	try:
+		if request.user.temp_pass:
+			logout(request)
+			return redirect(reverse("customers:login"))
+	except Exception:
+		pass
 	customer = get_object_or_404(Customer,id=user_id)
 	return render(request, "user/info_account.html",{'customer':customer})
 
 @login_required
-@user_passes_test(check_temporal)
 @csrf_exempt
 def update_premium(request, user_id):
-	form = form = TarjetaDateForm(request.POST or None)
+	try:
+		if request.user.temp_pass:
+			logout(request)
+			return redirect(reverse("customers:login"))
+	except Exception:
+		pass
+	form = TarjetaDateForm(request.POST or None)
 	if form.is_valid():
 		tarjeta = form.save(commit=False)
 		tarjeta.fecha_venc_tarjeta = datetime.datetime(int(form.cleaned_data["ano"]), 
@@ -100,7 +122,7 @@ def update_premium(request, user_id):
 		customer.premium = True
 		customer.cliente = False
 		customer.save()
-		return render(request, "user/update_premium.html")
+		return redirect(reverse("customers:update_premium",kwargs={"user_id":customer.id}))
 	return render(request, "user/update_premium.html", {"form":form})
 
 
@@ -119,9 +141,14 @@ def create_user_client(request):
 	return render(request, "user/create_user.html", {"form":form})
 
 @login_required
-@user_passes_test(check_temporal)
 @csrf_exempt
 def update_user(request, user_id):
+	try:
+		if request.user.temp_pass:
+			logout(request)
+			return redirect(reverse("customers:login"))
+	except Exception:
+		pass
 	customer = get_object_or_404(Customer, id=user_id)
 	if request.method == 'POST':
 		form = CustomerDateEditForm(data=request.POST, instance=customer)
@@ -143,8 +170,13 @@ def update_user(request, user_id):
 
 
 @login_required
-@user_passes_test(check_temporal)
 def admin_conf(request):
+	try:
+		if request.user.temp_pass:
+			logout(request)
+			return redirect(reverse("customers:login"))
+	except Exception:
+		pass
 	return render(request, "admin/menu_admin.html")
 
 

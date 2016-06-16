@@ -3,16 +3,16 @@
 {% load i18n %}
 
 {% block menus %}
-    <div>
-    	<h2>Cambiar Contraseña</h2>
-    </div>
-    <div class="container">
-		<form action="." method="post" class="">
-			{% csrf_token %}
-			{{ form|bootstrap }}
-			<div class="form-group">
-	      		<button type="submit" class="btn btn-primary">Guardar</button>
-	    	</div>
-		</form>
+    <div class="col-sm-6 ">
+	    <div>
+	    	<h2>Cambiar Contraseña</h2>
+	    </div>
+			<form action="." method="post" class="">
+				{% csrf_token %}
+				{{ form|bootstrap }}
+				<div class="form-group">
+		      		<button type="submit" class="btn btn-primary">Guardar</button>
+		    	</div>
+			</form>
     </div>
 {% endblock menus %}

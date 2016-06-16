@@ -1,0 +1,63 @@
+{% extends 'user/menu_hospedaje.html' %}
+{% load bootstrap %}
+{% block menus %}
+        <h2>Mis Hospedajes</h2>
+		 <table class="table">
+		    <thead>
+		      <tr>
+		        <th>Titulo</th>
+		        <th>Tipo</th>
+		        <th>Localidad</th>
+		        <th>Ciudad</th>
+		        <th>Fotos</th>
+		        <th>Acciones</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for hospedaje in hospedajes %}
+			      <tr>
+			        <td>{{ hospedaje.titulo }}</td>
+			        <td>{{ hospedaje.tipo.descripcion }}</td>
+			        <td>{{ hospedaje.localidad }}</td>
+			        <td>{{ hospedaje.ciudad }}</td>
+			        <td>
+			        	{% if hospedaje.foto_1 %}
+			        		<a class="open_modal" height-popup="60% "href="{{ hospedaje.foto_1.url }}"><span class="glyphicon glyphicon-picture"></span></a>
+			        	{% endif %}
+			        	{% if hospedaje.foto_2 %}
+			        		<a class="open_modal" height-popup="60% "href="{{ hospedaje.foto_2.url }}"><span class="glyphicon glyphicon-picture"></span></a>
+			        	{% endif %}
+			        	{% if hospedaje.foto_3 %}
+			        		<a class="open_modal" height-popup="60% "href="{{ hospedaje.foto_3.url }}"><span class="glyphicon glyphicon-picture"></span></a>
+			        	{% endif %}
+			        	{% if hospedaje.foto_4 %}
+			        		<a class="open_modal" height-popup="60% "href="{{ hospedaje.foto_4.url }}"><span class="glyphicon glyphicon-picture"></span></a>
+			        	{% endif %}
+			        	{% if hospedaje.foto_5 %}
+			        		<a class="open_modal" height-popup="60% "href="{{ hospedaje.foto_5.url }}"><span class="glyphicon glyphicon-picture"></span></a>
+			        	{% endif %}
+			        </td>
+			        <td>
+			        	<a href="{% url 'hospedajes:edit_hospedaje' hospedaje.id %}" ><span class="glyphicon glyphicon-pencil"></span></a>
+                            {% if hospedaje.estado %}
+                        		<a class="open_modal" height-popup="60%" href="{% url 'hospedajes:delete_hospedaje' hospedaje.id %}">
+                        		<span class="glyphicon glyphicon-trash"></span>
+                            {% else %}
+                                <a class="open_modal" height-popup="60%" href="#">
+                                <span class="glyphicon glyphicon-repeat"></span>
+                            {% endif %}
+                        </a>
+			        </td>
+			    {% empty %}
+			      <tr>
+			          <td>No hay ningun tipo de hospedaje</td>
+			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+
+						
+<a href="{% url 'hospedajes:create_hospedaje' %}" type="submit" class="btn btn-primary">Agregar</a>
+	
+
+{% endblock menus %}

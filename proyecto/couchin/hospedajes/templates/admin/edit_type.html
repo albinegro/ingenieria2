@@ -5,7 +5,7 @@
 		 <table class="table">
 		    <thead>
 		      <tr>
-		        <th>Descripcion</th>
+		        <th>Descripción</th>
 		        <th>Estado</th>
 		        <th>Acciones</th>
 		      </tr>
@@ -21,7 +21,7 @@
                         {% endif %}
 			        </td>
 			        <td>
-			        	<a href="{% url 'hospedajes:edit_type' tipo.id %}" class=" open_modal" height-popup="60%" ><span class="glyphicon glyphicon-pencil"></span></a>
+			        	<a href="{% url 'hospedajes:edit_type' tipo.id %}" class=" open_modal" height-popup="100%" ><span class="glyphicon glyphicon-pencil"></span></a>
                         <a class="open_modal" height-popup="60%" href="{% url 'hospedajes:delete_type' tipo.id %}">
                             {% if tipo.activo %}
                         		<span class="glyphicon glyphicon-trash"></span>
@@ -40,7 +40,7 @@
 		  </table>
 
 						
-<a href="{% url 'hospedajes:add_type' %}" height-popup="60%"type="submit" class="btn btn-primary open_modal">Agregar</a>
+<a href="{% url 'hospedajes:add_type' %}" height-popup="80%" type="submit" class="btn btn-primary open_modal">Agregar</a>
 	
 
 {% endblock menus_admin %}

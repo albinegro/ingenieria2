@@ -1,0 +1,13 @@
+{% extends 'base_popup.html' %}
+{% load bootstrap %}
+{% load i18n %}
+
+{% block content %}
+    <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+        <p> Su contraseña sera cambiada temporalmente por:</p>
+        <h3>{{ cont_temporal }}</h3>
+        <div class="form-group">
+            <button type="submit" value="{{cont_temporal}}" class="btn btn-primary">Cambiar</button>
+        </div>
+    </div>
+{% endblock content %}
