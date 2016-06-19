@@ -1,22 +1,40 @@
-from django.shortcuts import redirect, get_object_or_404, render
 from .forms import TipoHospedajeForm, HospedajeForm
 from .models import TipoHospedaje, Hospedaje
 from customers.models import Customer
 from multiupload.fields import MultiFileField
+from django.shortcuts import redirect, get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import csrf_exempt
 from core.libs import check_admin
+from django.db.models import Q
 # Create your views here.
+
+
+
+@login_required
+def info_booking(request,hospe_id):
+	try:
+		if request.user.temp_pass:
+			logout(request)
+			return redirect(reverse("customers:login"))
+	except Exception:
+		pass
+	hospedaje = get_object_or_404(Hospedaje,id=hospe_id)
+	return render(request, "hospedaje/info_booking.html",{'hospedaje': hospedaje})
+
+
+
+
 def delete_hospedaje(request, hospe_id):
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
 	if request.method == 'POST':
-		#if hospedaje.reservas_set.all().exists():
-		#	hospedaje.estado = False
-		#	hospedaje.save()
-		
-		hospedaje.delete()
+		if hospedaje.reservas_set.all().exists():
+			hospedaje.estado = False
+			hospedaje.save()
+		else:
+			hospedaje.delete()
 		return redirect(reverse("hospedajes:my_hospedajes",kwargs={"user_id":request.user.id}))
 
 	return render(request, "admin/confirm_delete.html")
@@ -49,7 +67,7 @@ def my_hospedajes(request, user_id):
 def list_photo(request, hospe_id):
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
 	photos = [
-	          hospedaje.foto_1,
+			  hospedaje.foto_1,
 			  hospedaje.foto_2,
 			  hospedaje.foto_3,
 			  hospedaje.foto_4,
@@ -90,7 +108,7 @@ def view_detail(request, hospe_id):
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
 	return render(request, "hospedaje/view_details.html",{"hospedaje": hospedaje})
 
-
+@login_required
 def list_couchin(request):
 	try:
 		if request.user.temp_pass:
@@ -99,7 +117,22 @@ def list_couchin(request):
 	except Exception:
 		pass
 
-	return render(request, "hospedaje/list_counchin.html",{"hospedajes":Hospedaje.objects.all()})
+	hospedaje = Hospedaje.objects.filter(estado=True)
+	if 'search_titulo' in request.GET and request.GET.get('search_titulo'):
+		hospedaje = hospedaje.filter(
+					Q(titulo__icontains=request.GET.get('search_titulo')) |
+					Q(descripcion__icontains=request.GET.get('search_titulo'))
+
+					)
+	if 'search_tipo' in request.GET and request.GET.get('search_tipo'):
+		hospedaje = hospedaje.filter(tipo__descripcion=request.GET.get('search_tipo'))
+	if 'search_capa' in request.GET and request.GET.get('search_capa'):
+		hospedaje = hospedaje.filter(capacidad=int(request.GET.get('search_capa')))
+	#if 'account_date_0' in request.GET and 'account_date_0' in request.GET:
+	#    orders = hospedaje.filter(date__range=['account_date_0', request.GET.get('account_date_1')])
+	tipo = TipoHospedaje.objects.filter(activo=True)
+
+	return render(request, "hospedaje/list_counchin.html",{"hospedajes":hospedaje, "tipo":tipo})
 
 
 @user_passes_test(check_admin)
@@ -144,7 +177,7 @@ def delete_type(request,type_id):
 			tipo.activo = not tipo.activo
 			tipo.save()
 		else:
-		    tipo.delete() 
+			tipo.delete() 
 		return redirect(reverse('home:close_popup'))
 	else:
 		if tipo.activo:

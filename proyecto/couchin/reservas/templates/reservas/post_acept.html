@@ -1,0 +1,15 @@
+{% extends 'base_popup.html' %}
+{% load bootstrap %}
+
+{% block content %}
+  <div class="container">
+        <p>Su reserva a sido creada. En breve evaluaran su reserva</p>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div class="form-group">
+               <a href="{% url 'home:close_popup' %}"class="btn btn-primary" >Aceptar</a>
+            </div>
+        </form>      
+  </div>
+
+{% endblock content %}

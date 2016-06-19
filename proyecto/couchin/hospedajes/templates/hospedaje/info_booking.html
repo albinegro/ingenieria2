@@ -1,0 +1,40 @@
+{% extends 'base_popup.html' %}
+{% load i18n %}
+{% load bootstrap %}
+{% block content %}
+    
+		     <div class="row" >
+		     	<div class="col-xs-6">
+		    	   <h4>Tipo: {{ hospedaje.tipo.descripcion }}</h4>
+		        </div>
+		    </div>
+
+		     <div class="row" >
+		        <div class="col-xs-6">
+		        	<h4>Descripción: {{ hospedaje.descripcion }}</h4>
+		       </div>
+		    </div>
+
+		     <div class="row" >
+		        <div class="col-xs-6">
+		        	<h4>Localidad: {{ hospedaje.localidad }}</h4>
+		       </div>
+		    </div>
+		    <div class="row" >
+		        <div class="col-xs-6">
+		        	<h4>Ciudad: {{ hospedaje.ciudad }}</h4>
+		       </div>
+		    </div>
+		     <div class="row" >
+		        <div class="col-xs-6">
+		        	<h4>Dirección: {{ hospedaje.direccion }}</h4>
+		       </div>
+		    </div>
+		    <div class="row" >
+		        <div class="col-xs-4">
+		        	<h4>Capacidad : {{ hospedaje.capacidad }}</h4>
+		       </div>
+		    </div>
+		    <a class="btn btn-primary" href="{% url 'home:close_popup' %}">Aceptar</a>
+		  
+{% endblock content %}	

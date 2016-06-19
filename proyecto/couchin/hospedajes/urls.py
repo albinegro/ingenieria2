@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^list/couchin/$', views.list_couchin, name='list_couchin'),
     url(r'^my/list/couchin/(?P<user_id>\d+)/$', views.my_hospedajes, name='my_hospedajes'),
     url(r'^my/create/couchin/$', views.create_hospedaje, name='create_hospedaje'),
+    url(r'^booking/info/(?P<hospe_id>\d+)/$', views.info_booking, name='info_booking'),
     url(r'^my/list/photo/(?P<hospe_id>\d+)/$', views.list_photo, name='list_photo'),
     url(r'^my/edit/couchin/(?P<hospe_id>\d+)/$', views.edit_hospedaje, name='edit_hospedaje'),
     url(r'^my/delete/couchin/(?P<hospe_id>\d+)/$', views.delete_hospedaje, name='delete_hospedaje'),

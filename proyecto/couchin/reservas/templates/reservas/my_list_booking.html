@@ -1,0 +1,33 @@
+{% extends 'user/menu_hospedaje.html' %}
+{% load bootstrap %}
+{% block menus %}
+        <h2>Mis Reservas</h2>
+		 <table class="table">
+		    <thead>
+		      <tr>
+		        <th>Hospedajes</th>
+		        <th>Desde</th>
+		        <th>Hasta</th>
+		        <th>Estado</th>
+		        <th>Dueño</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for reserva in reservas %}
+			      <tr>
+			        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
+			        <td>{{ reserva.fecha_desde }}</td>
+			        <td>{{ reserva.fecha_hasta }}</td>
+			        <td>{{ reserva.estado }}</td>
+			        {% if reserva.estado == "aceptada" or reserva.estado == "finalizada" %}
+			        	<td><a href="{% url 'customers:info_user' reserva.dueno.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
+		            {% endif %}
+			    
+			    {% empty %}
+			      <tr>
+			          <td>No hay ninguna reserva </td>
+			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+{% endblock menus %}

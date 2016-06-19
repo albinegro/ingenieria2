@@ -1,0 +1,46 @@
+{% extends 'user/menu_hospedaje.html' %}
+{% load bootstrap %}
+{% block menus %}
+        <h2>Mis Alquileres</h2>
+		 <table class="table">
+		    <thead>
+		      <tr>
+		        <th>Hospedaje</th>
+		        <th>Desde</th>
+		        <th>Hasta</th>
+		        <th>Inquilino</th>
+		        <th>Estado</th>
+		        <th>Acciones</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for reserva in reservas %}
+			      <tr>
+			        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
+			        <td>{{ reserva.fecha_desde }}</td>
+			        <td>{{ reserva.fecha_hasta }}</td>
+			        <td><a href="{% url 'customers:info_user' reserva.inquilino.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
+			        <td>{{ reserva.estado }}</td>
+			        <td>
+			        	{% if reserva.estado == "pendiente" %}
+			        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:acept_reserva' reserva.hospedaje.id reserva.id %}">Aceptar</a>
+			        	{% else %}
+				        	<a href="#" ><span class="glyphicon glyphicon-pencil"></span></a>
+	                            {% if hospedaje.estado %}
+	                        		<a class="open_modal" height-popup="60%" href="{% url 'hospedajes:delete_hospedaje' hospedaje.id %}">
+	                        		<span class="glyphicon glyphicon-trash"></span>
+	                            {% else %}
+	                                <a class="open_modal" height-popup="60%" href="#">
+	                                <span class="glyphicon glyphicon-repeat"></span>
+	                            {% endif %}
+                        {% endif %}
+                        </a>
+			        </td>
+			    {% empty %}
+			      <tr>
+			          <td>No hay ninguna reserva </td>
+			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+{% endblock menus %}

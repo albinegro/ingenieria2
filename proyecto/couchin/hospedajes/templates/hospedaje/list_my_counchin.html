@@ -16,7 +16,7 @@
 		    <tbody>
 		    	{% for hospedaje in hospedajes %}
 			      <tr>
-			        <td>{{ hospedaje.titulo }}</td>
+			        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' hospedaje.id %}">{{ hospedaje.titulo }}</a></td>
 			        <td>{{ hospedaje.tipo.descripcion }}</td>
 			        <td>{{ hospedaje.localidad }}</td>
 			        <td>{{ hospedaje.ciudad }}</td>
