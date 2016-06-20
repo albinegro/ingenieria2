@@ -10,6 +10,7 @@
 		        <th>Localidad</th>
 		        <th>Ciudad</th>
 		        <th>Fotos</th>
+		        <th>Estado</th>
 		        <th>Acciones</th>
 		      </tr>
 		    </thead>
@@ -36,6 +37,13 @@
 			        	{% if hospedaje.foto_5 %}
 			        		<a class="open_modal" height-popup="60% "href="{{ hospedaje.foto_5.url }}"><span class="glyphicon glyphicon-picture"></span></a>
 			        	{% endif %}
+			        </td>
+			        <td>
+			        	{% if hospedaje.estado %}
+                           <span class="glyphicon glyphicon-ok"></span>
+                        {% else %}
+                           <span class="glyphicon glyphicon-remove"></span>
+                        {% endif %}
 			        </td>
 			        <td>
 			        	<a href="{% url 'hospedajes:edit_hospedaje' hospedaje.id %}" ><span class="glyphicon glyphicon-pencil"></span></a>

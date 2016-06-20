@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import csrf_exempt
 from core.libs import check_admin
 from django.db.models import Q
+import datetime
 # Create your views here.
 
 
@@ -30,12 +31,12 @@ def info_booking(request,hospe_id):
 def delete_hospedaje(request, hospe_id):
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
 	if request.method == 'POST':
-		if hospedaje.reservas_set.all().exists():
+		if hospedaje.imueble.all().exists():
 			hospedaje.estado = False
 			hospedaje.save()
 		else:
 			hospedaje.delete()
-		return redirect(reverse("hospedajes:my_hospedajes",kwargs={"user_id":request.user.id}))
+		return redirect(reverse("home:close_popup"))
 
 	return render(request, "admin/confirm_delete.html")
 
@@ -128,9 +129,39 @@ def list_couchin(request):
 		hospedaje = hospedaje.filter(tipo__descripcion=request.GET.get('search_tipo'))
 	if 'search_capa' in request.GET and request.GET.get('search_capa'):
 		hospedaje = hospedaje.filter(capacidad=int(request.GET.get('search_capa')))
-	#if 'account_date_0' in request.GET and 'account_date_0' in request.GET:
-	#    orders = hospedaje.filter(date__range=['account_date_0', request.GET.get('account_date_1')])
+	hospe_dates = []
+	if 'account_date_0' in request.GET and 'account_date_1' in request.GET and  request.GET.get('account_date_0') and request.GET.get('account_date_1'):
+		desde = datetime.datetime.strptime(request.GET.get('account_date_0'), '%Y-%m-%d').date()
+		hasta = datetime.datetime.strptime(request.GET.get('account_date_1'), '%Y-%m-%d').date()
+		if desde > hasta:
+			hasta = datetime.datetime.strptime(request.GET.get('account_date_0'), '%Y-%m-%d').date()
+			desde = datetime.datetime.strptime(request.GET.get('account_date_1'), '%Y-%m-%d').date()
+
+		for hospe in hospedaje:
+			if hospe.imueble.filter(estado="aceptada").exists():
+				for reserva in hospe.imueble.filter(estado="aceptada"):
+						if not ((reserva.fecha_desde < desde < reserva.fecha_hasta ) or 
+								(reserva.fecha_desde < hasta < reserva.fecha_hasta) or 
+									(desde < reserva.fecha_desde < hasta) or 
+										(desde < reserva.fecha_hasta < hasta) or
+											(reserva.fecha_desde == desde ) or 
+												(reserva.fecha_hasta == hasta)):
+					
+							if hospe not in hospe_dates:
+								hospe_dates.append(hospe)
+						else:
+							try:
+								hospe_dates.remove(hospe)
+							except Exception:
+								pass
+
+							break 
+			else:
+				hospe_dates.append(hospe)
+			
 	tipo = TipoHospedaje.objects.filter(activo=True)
+	if hospe_dates:
+		hospedaje = hospe_dates
 
 	return render(request, "hospedaje/list_counchin.html",{"hospedajes":hospedaje, "tipo":tipo})
 

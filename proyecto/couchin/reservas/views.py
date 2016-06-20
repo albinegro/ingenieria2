@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import redirect, get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -102,5 +103,14 @@ def my_rental(request, user_id):
 	except Exception:
 		pass
 	customer = get_object_or_404(Customer, id=user_id)
+	reservas = Reserva.objects.filter(dueno=customer,).exclude(estado="rechazada").order_by("-fecha_desde")
+	if 'account_date_0' in request.GET and 'account_date_1' in request.GET and  request.GET.get('account_date_0') and request.GET.get('account_date_1'):
+		desde = datetime.strptime(request.GET.get('account_date_0'), '%Y-%m-%d').date()
+		hasta = datetime.strptime(request.GET.get('account_date_1'), '%Y-%m-%d').date()
+		if desde > hasta:
+			hasta = datetime.strptime(request.GET.get('account_date_0'), '%Y-%m-%d').date()
+			desde = datetime.strptime(request.GET.get('account_date_1'), '%Y-%m-%d').date()
+		reservas = reservas.filter(fecha_desde__range=(desde,hasta),fecha_hasta__range=(desde,hasta))
 
-	return render(request,"reservas/my_list_rental.html",{"reservas":Reserva.objects.filter(dueno=customer,).exclude(estado="rechazada").order_by("-fecha_desde")})
+
+	return render(request,"reservas/my_list_rental.html",{"reservas":reservas})

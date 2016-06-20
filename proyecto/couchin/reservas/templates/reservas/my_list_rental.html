@@ -2,6 +2,34 @@
 {% load bootstrap %}
 {% block menus %}
         <h2>Mis Alquileres</h2>
+        <form action="." method="get" id="menu-simple">
+	        <div class="col-lg-2 col-sm-4 col-xs-12">
+	            <div class="form-group">
+	                <div class='input-group date' id='datetimepicker1'>
+	                     <input class=" form-control " id="id-date" name="account_date_0" type="text" placeholder="Desde">
+	                        <span class="input-group-addon">
+	                            <span class="glyphicon glyphicon-calendar"></span>
+	                        </span>
+	                </div>
+	            </div>
+	        </div>
+
+	        <div class="col-lg-2 col-sm-4 col-xs-12">
+	            <div class="form-group">
+	                <div class='input-group date' id='datetimepicker2'>
+	                     <input class=" form-control " id="id-date" name="account_date_1" type="text" placeholder="Hasta">
+	                    <span class="input-group-addon">
+	                        <span class="glyphicon glyphicon-calendar"></span>
+	                    </span>
+	                </div>
+	            </div>
+	        </div>
+	         <div class="col-lg-2 col-sm-4 col-xs-12">
+	            <div class="form-group order "> 
+	                <button type="submit" class="btn btn-primary glyphicon glyphicon-search"> Buscar</button>
+	            </div>
+	        </div>
+	    </form>
 		 <table class="table">
 		    <thead>
 		      <tr>
@@ -43,4 +71,23 @@
 			    {% endfor %}
 		    </tbody>
 		  </table>
+<script>
+       $(function () {
+            $('#datetimepicker1').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+                useCurrent: false
+            });
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+                useCurrent: false
+            });
+        });
+
+
+
+</script>
 {% endblock menus %}
