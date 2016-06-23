@@ -34,6 +34,9 @@ def delete_hospedaje(request, hospe_id):
 		if hospedaje.imueble.all().exists():
 			hospedaje.estado = False
 			hospedaje.save()
+			for reserva in hospedaje.imueble.filter(estado="pendiente"):
+				reserva.estado = "rechazada"
+				reserva.save()
 		else:
 			hospedaje.delete()
 		return redirect(reverse("home:close_popup"))
@@ -44,7 +47,7 @@ def delete_hospedaje(request, hospe_id):
 def edit_hospedaje(request,hospe_id):
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
 	if request.method == 'POST':
-		form = HospedajeForm(data=request.POST, instance=hospedaje)
+		form = HospedajeForm(request.POST, request.FILES, instance=hospedaje)
 		if form.is_valid():
 			form.save()
 			return redirect(reverse("hospedajes:my_hospedajes",kwargs={"user_id":request.user.id}))
@@ -92,6 +95,7 @@ def create_hospedaje(request):
 			hospedaje = form.save(commit=False)
 			hospedaje.customer = request.user
 			hospedaje.save()
+
 			return redirect(reverse("hospedajes:my_hospedajes",kwargs={"user_id":request.user.id}))
 	else:
 		form = HospedajeForm()

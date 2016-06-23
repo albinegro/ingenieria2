@@ -4,6 +4,18 @@ from hospedajes.models import Hospedaje
 
 # Create your models here.
 
+RANGE = (
+          (("1"),("1")),
+          (("2"),("2")),
+          (("3"),("3")),
+          (("4"),("4")),
+          (("5"),("5")),
+          (("6"),("6")),
+          (("7"),("7")),
+          (("8"),("8")),
+          (("9"),("9")),
+          (("10"),("10")))
+
 
 STATE_RESERVA = ((("pendiente"), ("Pendiente")),
                  (("rechazada"), ("Rechazada")),
@@ -18,3 +30,10 @@ class Reserva(models.Model):
 	fecha_desde = models.DateField()
 	fecha_hasta = models.DateField()
 	vista = models.BooleanField(default=False)
+	califica_dueno = models.ForeignKey('Calificacion', related_name="cal_dueno", blank=True, null=True)
+	califica_inquilino = models.ForeignKey('Calificacion', related_name="cal_inquilino", blank=True, null=True)
+
+
+class Calificacion(models.Model):
+	descripcion = models.TextField(max_length=250)
+	numero = models.CharField(choices=RANGE, default="1", max_length=30)

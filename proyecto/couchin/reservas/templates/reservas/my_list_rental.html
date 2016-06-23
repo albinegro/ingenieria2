@@ -38,6 +38,7 @@
 		        <th>Hasta</th>
 		        <th>Inquilino</th>
 		        <th>Estado</th>
+		        <th>Calificación/Inquilino</th>
 		        <th>Acciones</th>
 		      </tr>
 		    </thead>
@@ -49,21 +50,26 @@
 			        <td>{{ reserva.fecha_hasta }}</td>
 			        <td><a href="{% url 'customers:info_user' reserva.inquilino.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
 			        <td>{{ reserva.estado }}</td>
+			        <td>{% if reserva.califica_inquilino %}
+                                <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+
+			        		{% endif %}
+			        </td>
 			        <td>
 			        	{% if reserva.estado == "pendiente" %}
 			        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:acept_reserva' reserva.hospedaje.id reserva.id %}">Aceptar</a>
-			        	{% else %}
-				        	<a href="#" ><span class="glyphicon glyphicon-pencil"></span></a>
-	                            {% if hospedaje.estado %}
-	                        		<a class="open_modal" height-popup="60%" href="{% url 'hospedajes:delete_hospedaje' hospedaje.id %}">
-	                        		<span class="glyphicon glyphicon-trash"></span>
-	                            {% else %}
-	                                <a class="open_modal" height-popup="60%" href="#">
-	                                <span class="glyphicon glyphicon-repeat"></span>
-	                            {% endif %}
+			        	{% endif %}
+			        	{% if reserva.estado == "aceptada" or reserva.estado == "finalizada"%}
+                            {% if reserva.califica_dueno %}
+                                 <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="40%"><span class="glyphicon glyphicon-check"></span></a>
+				        	{% else %}
+				        	    <a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+				        	{% endif %}
+	                        
                         {% endif %}
                         </a>
 			        </td>
+			     </tr>
 			    {% empty %}
 			      <tr>
 			          <td>No hay ninguna reserva </td>

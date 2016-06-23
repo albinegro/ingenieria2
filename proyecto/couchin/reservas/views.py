@@ -5,8 +5,46 @@ from django.contrib.auth.decorators import login_required
 from datetime import date, datetime, timedelta
 from hospedajes.models import Hospedaje
 from customers.models import Customer
-from .forms import ReservaForm
+from .forms import *
 from .models import Reserva
+
+@login_required
+def view_calificacion(request, cali_id):
+	cali = get_object_or_404(Calificacion, id=cali_id)
+	return render(request, "calificacion/view_cali.html",{"cali":cali})
+
+@login_required
+def make_calificacion_inquilino(request, reserva_id):
+	reserva = get_object_or_404(Reserva, id=reserva_id)
+	if request.method == "POST":
+		form = CalificacionForm(request.POST)
+		if form.is_valid():
+			cali = form.save(commit=False)
+			cali.save()
+			reserva.califica_inquilino = cali
+			reserva.save()
+			return redirect(reverse("home:close_popup"))
+	else:
+		form = CalificacionForm()
+	return render(request,"calificacion/make_cali.html",{"form":form})
+
+
+@login_required
+def make_calificacion_dueno(request, reserva_id):
+	reserva = get_object_or_404(Reserva, id=reserva_id)
+	if request.method == "POST":
+		form = CalificacionForm(request.POST)
+		if form.is_valid():
+			cali = form.save(commit=False)
+			cali.save()
+			reserva.califica_dueno = cali
+			reserva.save()
+			return redirect(reverse("home:close_popup"))
+	else:
+		form = CalificacionForm()
+	return render(request,"calificacion/make_cali.html",{"form":form})
+
+
 
 @login_required
 def post_acept(request):
@@ -33,11 +71,11 @@ def acept_reserva(request, hospe_id, rese_id):
 		reserva.save()
 		for rese in hospedaje.imueble.filter(estado="pendiente"):
 			if ((reserva.fecha_desde < rese.fecha_desde < reserva.fecha_hasta ) or 
-			        (reserva.fecha_desde < rese.fecha_hasta < reserva.fecha_hasta) or 
-			            (rese.fecha_desde < reserva.fecha_desde < rese.fecha_hasta) or 
-			                (rese.fecha_desde < reserva.fecha_hasta < rese.fecha_hasta) or
-			                    (reserva.fecha_desde == rese.fecha_desde ) or 
-			                        (reserva.fecha_hasta == rese.fecha_hata)):
+					(reserva.fecha_desde < rese.fecha_hasta < reserva.fecha_hasta) or 
+						(rese.fecha_desde < reserva.fecha_desde < rese.fecha_hasta) or 
+							(rese.fecha_desde < reserva.fecha_hasta < rese.fecha_hasta) or
+								(reserva.fecha_desde == rese.fecha_desde ) or 
+									(reserva.fecha_hasta == rese.fecha_hata)):
 				rese.estado = "rechazada"
 				rese.save()
 		return redirect(reverse("home:close_popup"))
@@ -76,6 +114,10 @@ def make_booking(request, hospe_id, user_id):
 			return redirect(reverse("reservas:post_acept"))
 	else:
 		form = ReservaForm()
+	if form.errors:
+		if form.errors.get('__all__')[0] == 'Este rango de fechas ya esta reservada.':
+			form.errors["fecha_desde"] = ['Este rango de fechas ya esta reservado.']
+			form.errors["fecha_hasta"] = ['Este rango de fechas ya esta reservado.']
 	re = []
 	for hospe in hospedaje.imueble.filter(estado="aceptada"):
 		for result in perdelta(hospe.fecha_desde, hospe.fecha_hasta, timedelta(days=1)):
