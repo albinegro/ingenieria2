@@ -1,0 +1,99 @@
+{% extends 'user/menu_hospedaje.html' %}
+{% load bootstrap %}
+{% block menus %}
+        <h2>Mis Alquileres</h2>
+        <form action="." method="get" id="menu-simple">
+	        <div class="col-lg-2 col-sm-4 col-xs-12">
+	            <div class="form-group">
+	                <div class='input-group date' id='datetimepicker1'>
+	                     <input class=" form-control " id="id-date" name="account_date_0" type="text" placeholder="Desde">
+	                        <span class="input-group-addon">
+	                            <span class="glyphicon glyphicon-calendar"></span>
+	                        </span>
+	                </div>
+	            </div>
+	        </div>
+
+	        <div class="col-lg-2 col-sm-4 col-xs-12">
+	            <div class="form-group">
+	                <div class='input-group date' id='datetimepicker2'>
+	                     <input class=" form-control " id="id-date" name="account_date_1" type="text" placeholder="Hasta">
+	                    <span class="input-group-addon">
+	                        <span class="glyphicon glyphicon-calendar"></span>
+	                    </span>
+	                </div>
+	            </div>
+	        </div>
+	         <div class="col-lg-2 col-sm-4 col-xs-12">
+	            <div class="form-group order "> 
+	                <button type="submit" class="btn btn-primary glyphicon glyphicon-search"> Buscar</button>
+	            </div>
+	        </div>
+	    </form>
+		 <table class="table">
+		    <thead>
+		      <tr>
+		        <th>Hospedaje</th>
+		        <th>Desde</th>
+		        <th>Hasta</th>
+		        <th>Inquilino</th>
+		        <th>Estado</th>
+		        <th>Calificación/Inquilino</th>
+		        <th>Acciones</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for reserva in reservas %}
+			      <tr>
+			        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
+			        <td>{{ reserva.fecha_desde }}</td>
+			        <td>{{ reserva.fecha_hasta }}</td>
+			        <td><a href="{% url 'customers:info_user' reserva.inquilino.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
+			        <td>{{ reserva.estado }}</td>
+			        <td>{% if reserva.califica_inquilino %}
+                                <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+
+			        		{% endif %}
+			        </td>
+			        <td>
+			        	{% if reserva.estado == "pendiente" %}
+			        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:acept_reserva' reserva.hospedaje.id reserva.id %}">Aceptar</a>
+			        	{% endif %}
+			        	{% if reserva.estado == "aceptada" or reserva.estado == "finalizada"%}
+                            {% if reserva.califica_dueno %}
+                                 <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="40%"><span class="glyphicon glyphicon-check"></span></a>
+				        	{% else %}
+				        	    <a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+				        	{% endif %}
+	                        
+                        {% endif %}
+                        </a>
+			        </td>
+			     </tr>
+			    {% empty %}
+			      <tr>
+			          <td>No hay ninguna reserva </td>
+			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+<script>
+       $(function () {
+            $('#datetimepicker1').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+                useCurrent: false
+            });
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+                useCurrent: false
+            });
+        });
+
+
+
+</script>
+{% endblock menus %}

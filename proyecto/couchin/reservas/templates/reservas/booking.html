@@ -1,0 +1,87 @@
+{% extends 'base_popup.html' %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+{% block content %}
+    <div class="container">
+      <p>Eliga el rango de fecha de la reserva</p>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div  style="position: relative" >
+                  <div class="row" >
+                    <div class="col-xs-6">
+                        {{ form.fecha_desde|bootstrap }}
+                    </div>
+                    <div  class="col-xs-6">
+                        {{ form.fecha_hasta|bootstrap }}
+                    </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Agregar</button>
+                  <a href="{% url 'home:close_popup' %}"class="btn btn-primary" >Cancelar</a>
+            </div>
+        </form>
+    </div>
+<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+ <script type="text/javascript">
+    console.log("{{reservas}}")
+    var unavailableDates = {{reservas|safe}};
+
+    unavailableDates.forEach(function(item, i) { 
+                    var v = item.split("-");
+                    
+   
+                    unavailableDates[i] = new Date(parseInt(v[0]),
+                                        parseInt(v[1])-1,
+                                        parseInt(v[2]));
+                    }
+    );  
+    console.log(unavailableDates)
+    function unavailable(date) {
+        dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+        if ($.inArray(dmy, unavailableDates) == -1) {
+            return [true, ""];
+        } else {
+            return [false, "", "Unavailable"];
+        }
+    }
+
+
+    var dateToday = new Date();
+    $(function () {
+            $('#id_fecha_desde').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+                useCurrent: false,
+                disabledDates: unavailableDates,
+                minDate: dateToday
+            });
+        });
+    $(function () {
+            $('#id_fecha_hasta').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+                useCurrent: false,
+                disabledDates: unavailableDates,
+                minDate: dateToday
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+ </script>
+{% endblock content %}

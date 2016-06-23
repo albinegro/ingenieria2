@@ -1,0 +1,10 @@
+{% extends 'base_popup.html' %}
+{% load bootstrap %}
+
+{% block content %}
+        <h3>Ver calificación</h3>
+        <h4>Puntucacion:{{cali.numero}}</h4>
+        <h4>Descripcion:{{cali.descripcion}}</h4>
+        <a href="{% url 'home:close_popup' %}" class="btn btn-primary">Aceptar</a>
+        
+{% endblock content %}

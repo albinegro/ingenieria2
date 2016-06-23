@@ -20,8 +20,8 @@
 					    <p>Ciudad: {{ hospedaje.ciudad }}</p>
 					    <p>Calle: {{ hospedaje.direccion }}</p>
 					    <p>Capacidad:{{ hospedaje.capacidad }}</p>
-				  		{% if user.premium or user.admin or user.client %}
-					    	<a class="btn btn-primary" href="#">Reservar</a>
+				  		{% if user.premium or user.admin or user.cliente %}
+					    	<a class="btn btn-primary open_modal" height-popup="60%" href="{% url 'reservas:make_booking' hospedaje.id user.id %}">Reservar</a>
 				      		
 				      	{% else %}
 				      	    <a class="btn btn-primary" href="{% url 'customers:login' %}">Reservar</a>

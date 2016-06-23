@@ -100,6 +100,18 @@ def info_account(request,user_id):
 	customer = get_object_or_404(Customer,id=user_id)
 	return render(request, "user/info_account.html",{'customer':customer})
 
+
+@login_required
+def info_user(request,user_id):
+	try:
+		if request.user.temp_pass:
+			logout(request)
+			return redirect(reverse("customers:login"))
+	except Exception:
+		pass
+	customer = get_object_or_404(Customer,id=user_id)
+	return render(request, "user/info_user.html",{'customer':customer})
+
 @login_required
 @csrf_exempt
 def update_premium(request, user_id):

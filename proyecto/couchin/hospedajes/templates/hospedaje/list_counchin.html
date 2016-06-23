@@ -3,12 +3,63 @@
 {% load i18n %}
 {% load staticfiles %}
 {% block content %}
- <div class="row">
+<div>
+ <form action="." method="get" id="menu-simple">
+          <div class="col-lg-3 col-sm-4 col-xs-12">
+                <div class="form-group">
+                   <input class=" form-control " id="id-titulo" maxlength="250" name="search_titulo" type="text" placeholder="{% trans "Titulo"%}, {% trans "Descripción" %}">
+                </div>
+           </div>
+        
+          <div class="col-lg-3 col-sm-4 col-xs-12">
+                <div class="form-group">
+                   <input class=" form-control " id="id-capa" maxlength="250" name="search_capa" type="text" placeholder="{% trans "Capacidad"%}">
+                </div>
+           </div>
+         <div class="col-lg-3 col-sm-4 col-xs-12">
+                <div class="form-group">
+                    <select class=" form-control " id="id-search" maxlength="250" name="search_tipo" type="text" placeholder="{% trans "Tipo"%}">
+                        {% for t in tipo %}
+                            <option>{{ t.descripcion }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+           </div>
+        
+        <div class="col-lg-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                     <input class=" form-control " id="id-date" name="account_date_0" type="text" placeholder="{% trans "Desde" %}">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker2'>
+                     <input class=" form-control " id="id-date" name="account_date_1" type="text" placeholder="{% trans "Hasta" %}">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-4 col-xs-12">
+            <div class="form-group order "> 
+                <button type="submit" class="btn btn-primary glyphicon glyphicon-search"> Buscar</button>
+            </div>
+        </div>
+    </form>
+ </div>
+ <div class="container">
     {% for hospedaje in hospedajes %}
         <div class="col-sm-4 col-lg-4 col-md-4">
             <div class="thumbnail">
                 {% if user.admin or user.premium %}
-                    <img src="{{hospedaje.foto_1}}" alt="">
+                    <img src="{{hospedaje.foto_1.url }}" alt="">
                 {% else %}
                     <img src="{% static 'img/default.png' %}" alt="">
                 {% endif %}
@@ -22,6 +73,27 @@
             </div>
     </div>
     {% endfor %}
+<script type="text/javascript">
+         
+        var dateToday = new Date();
+         $(function () {
+            $('#datetimepicker1').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+                minDate: dateToday,
+                useCurrent: false
+            });
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+                useCurrent: false,
+                minDate: dateToday
+            });
+        });
+
+</script>
    
     
 {% endblock content %}
