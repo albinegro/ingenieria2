@@ -28,7 +28,7 @@ class TarjetaDateForm(TarjetaForm):
 
 
 class CustomerForm(ModelForm):
-	code_postal = forms.IntegerField(label="Código Postal",error_messages={'invalid':"Ingrese un código postal válido", 'min_value':'Ingrese un codigo de 4 caracteres'})
+	code_postal = forms.IntegerField(label="Código Postal",error_messages={'invalid':"Ingrese un código postal válido.", 'min_value':'Ingrese un código de 4 caracteres.'})
 	class Meta:
 		model = Customer
 		fields = ["nombre",
@@ -99,7 +99,7 @@ class PremiumForm(CustomerForm):
 	tarjeta_credito = forms.CharField()
 	tipo_tarjeta = forms.ChoiceField(choices=TIPOS_TARJETAS)
 	fecha_venc_tarjeta = forms.DateField()
-	codigo_seguridad = forms.IntegerField(error_messages={'invalid':"Ingrese un código postal valido"})
+	codigo_seguridad = forms.IntegerField(error_messages={'invalid':"Ingrese un código postal valido."})
 
 
 

@@ -2,7 +2,6 @@ from django.shortcuts import redirect, get_object_or_404, render
 from .forms import TipoHospedajeForm, HospedajeForm
 from .models import TipoHospedaje, Hospedaje
 from customers.models import Customer
-from multiupload.fields import MultiFileField
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test

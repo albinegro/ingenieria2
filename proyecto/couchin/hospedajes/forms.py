@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
 from django.forms import ModelForm
 from .models import TipoHospedaje, Hospedaje
 from django import forms
-from multiupload.fields import MultiFileField
 
 class HospedajeForm(ModelForm):
+	titulo = forms.CharField(label="Título")
+	descripcion = forms.CharField(label="Descripción")
+	direccion = forms.CharField(label="Dirección")
 	class Meta:
 	    model= Hospedaje
 	    exclude = ['customer', 'estado']

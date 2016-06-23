@@ -5,13 +5,13 @@ from customers.models import Customer
 # Create your models here.
 class Hospedaje(models.Model):
 	customer  = models.ForeignKey(Customer)
-	localidad = models.CharField(max_length=250)
+	titulo = models.CharField(max_length=250)
 	ciudad = models.CharField(max_length=250)
+	localidad = models.CharField(max_length=250)
 	direccion = models.CharField(max_length=250)
 	capacidad = models.IntegerField()
-	descripcion = models.TextField(max_length=250)
-	titulo = models.CharField(max_length=250)
 	tipo = models.ForeignKey('TipoHospedaje')
+	descripcion = models.TextField(max_length=250)
 	estado = models.BooleanField(default=True)
 	foto_1 = models.ImageField(upload_to='photos/', null=True, blank=True)
 	foto_2 = models.ImageField(upload_to='photos/', null=True, blank=True)

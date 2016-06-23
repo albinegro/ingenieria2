@@ -2,10 +2,21 @@
 {% load bootstrap %}
 
 {% block menus %}
-        <h3>Crear un Hospedaje</h3>
+        <h3>Crear Hospedaje</h3>
         <form action="." method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form|bootstrap }}
+            {{ form.titulo|bootstrap }}
+			{{ form.ciudad|bootstrap }}	
+			{{ form.localidad|bootstrap }}
+			{{ form.direccion|bootstrap }}
+			{{ form.capacidad|bootstrap }}
+			{{ form.tipo|bootstrap }}
+			{{ form.descripcion|bootstrap }}
+			{{ form.foto_1|bootstrap }}
+			{{ form.foto_2|bootstrap }}
+			{{ form.foto_3|bootstrap }}
+			{{ form.foto_4|bootstrap }}
+			{{ form.foto_5|bootstrap }}
             <div class="form-group">
           		<button type="submit" class="btn btn-primary">Guardar</button>
             </div>
