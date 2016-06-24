@@ -59,7 +59,6 @@ class CustomerEditForm(ModelForm):
 		model = Customer
 		fields = ["nombre",
 				 "apellido",
-				 "email", 
 				 "tel",
 				 "direccion",
 				 "code_postal",
