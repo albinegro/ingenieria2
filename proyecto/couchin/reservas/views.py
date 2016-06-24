@@ -101,7 +101,7 @@ def make_booking(request, hospe_id, user_id):
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
 	customer = get_object_or_404(Customer, id=user_id)
 	if request.method == 'POST':
-		form = ReservaForm(request.POST)
+		form = ReservaForm(request.POST,{"hospedaje":hospe_id})
 		if form.is_valid():
 			reserva = form.save(commit=False)
 			if form.cleaned_data.get("fecha_desde") > form.cleaned_data.get("fecha_hasta"):
@@ -122,7 +122,7 @@ def make_booking(request, hospe_id, user_id):
 	for hospe in hospedaje.imueble.filter(estado="aceptada"):
 		for result in perdelta(hospe.fecha_desde, hospe.fecha_hasta, timedelta(days=1)):
 			re.append(result.isoformat())
-	return render(request,"reservas/booking.html",{"form":form, "reservas":re})
+	return render(request,"reservas/booking.html",{"form":form, "reservas":re, "hosid":hospe_id})
 
 
 def my_booking(request, user_id):
@@ -134,7 +134,7 @@ def my_booking(request, user_id):
 		pass
 	customer = get_object_or_404(Customer, id=user_id)
 
-	return render(request,"reservas/my_list_booking.html",{"reservas":Reserva.objects.filter(inquilino=customer)})
+	return render(request,"reservas/my_list_booking.html",{"reservas":Reserva.objects.filter(inquilino=customer).order_by("-fecha_desde").order_by("-hospedaje__titulo")})
 
 
 def my_rental(request, user_id):
@@ -145,7 +145,7 @@ def my_rental(request, user_id):
 	except Exception:
 		pass
 	customer = get_object_or_404(Customer, id=user_id)
-	reservas = Reserva.objects.filter(dueno=customer,).exclude(estado="rechazada").order_by("-fecha_desde")
+	reservas = Reserva.objects.filter(dueno=customer,).exclude(estado="rechazada").order_by("-fecha_desde").order_by("-hospedaje__titulo")
 	if 'account_date_0' in request.GET and 'account_date_1' in request.GET and  request.GET.get('account_date_0') and request.GET.get('account_date_1'):
 		desde = datetime.strptime(request.GET.get('account_date_0'), '%Y-%m-%d').date()
 		hasta = datetime.strptime(request.GET.get('account_date_1'), '%Y-%m-%d').date()

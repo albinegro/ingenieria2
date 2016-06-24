@@ -2,6 +2,7 @@
 from django.forms import ModelForm
 from django import forms
 from .models import Reserva, Calificacion
+from hospedajes.models import Hospedaje
 
 
 
@@ -17,9 +18,10 @@ class ReservaForm(ModelForm):
 		
 		hasta = cleaned_data.get("fecha_hasta")
 		desde = cleaned_data.get("fecha_desde")
+		hospedaje = Hospedaje.objects.get(id=self.files.get("hospedaje"))
 		if not desde or not hasta:
 			raise forms.ValidationError("Datos requeridos", code="required")
-		for reserva in Reserva.objects.filter(estado="aceptada"):
+		for reserva in Reserva.objects.filter(estado="aceptada",hospedaje=hospedaje):
 			if reserva.hospedaje.estado:
 				if ((reserva.fecha_desde< desde < reserva.fecha_hasta ) or
 						(reserva.fecha_desde < hasta < reserva.fecha_hasta) or

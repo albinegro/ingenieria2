@@ -31,7 +31,9 @@
                         <td>{% if reserva.califica_inquilino %}
                              <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="gglyphicon glyphicon-check"></span></a>
 			        	{% else %}
-			        	    <a href="{% url 'reservas:make_calificacion_inquilino' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+			        	     {% if reserva.get_can_cali %}
+			        	   		 <a href="{% url 'reservas:make_calificacion_inquilino' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+			        	   	 {% endif %}
 			        	{% endif %}</td>
 	                        
                     {% endif %}
