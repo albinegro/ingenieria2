@@ -112,7 +112,6 @@ def view_detail(request, hospe_id):
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
 	return render(request, "hospedaje/view_details.html",{"hospedaje": hospedaje})
 
-@login_required
 def list_couchin(request):
 	try:
 		if request.user.temp_pass:

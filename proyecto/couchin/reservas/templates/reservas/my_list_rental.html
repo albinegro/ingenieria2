@@ -63,7 +63,9 @@
                             {% if reserva.califica_dueno %}
                                  <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="40%"><span class="glyphicon glyphicon-check"></span></a>
 				        	{% else %}
-				        	    <a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+				        	    {% if reserva.get_can_cali %}
+				        	    	<a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+				        	    {% endif %}
 				        	{% endif %}
 	                        
                         {% endif %}

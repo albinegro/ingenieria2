@@ -1,26 +1,27 @@
 from django.db import models
 from customers.models import Customer
 from hospedajes.models import Hospedaje
+import datetime
 
 # Create your models here.
 
 RANGE = (
-          (("1"),("1")),
-          (("2"),("2")),
-          (("3"),("3")),
-          (("4"),("4")),
-          (("5"),("5")),
-          (("6"),("6")),
-          (("7"),("7")),
-          (("8"),("8")),
-          (("9"),("9")),
-          (("10"),("10")))
+		  (("1"),("1")),
+		  (("2"),("2")),
+		  (("3"),("3")),
+		  (("4"),("4")),
+		  (("5"),("5")),
+		  (("6"),("6")),
+		  (("7"),("7")),
+		  (("8"),("8")),
+		  (("9"),("9")),
+		  (("10"),("10")))
 
 
 STATE_RESERVA = ((("pendiente"), ("Pendiente")),
-                 (("rechazada"), ("Rechazada")),
-                 (("finalizada"), ("Finalizada")),
-                 (("aceptada"), ("Aceptada")))
+				 (("rechazada"), ("Rechazada")),
+				 (("finalizada"), ("Finalizada")),
+				 (("aceptada"), ("Aceptada")))
 
 class Reserva(models.Model):
 	hospedaje = models.ForeignKey(Hospedaje,related_name="imueble")
@@ -33,7 +34,11 @@ class Reserva(models.Model):
 	califica_dueno = models.ForeignKey('Calificacion', related_name="cal_dueno", blank=True, null=True)
 	califica_inquilino = models.ForeignKey('Calificacion', related_name="cal_inquilino", blank=True, null=True)
 
+	def get_can_cali(self):
+		if self.fecha_hasta <= datetime.datetime.now().date():
+		   return True
+		return False
 
 class Calificacion(models.Model):
-	descripcion = models.TextField(max_length=250)
-	numero = models.CharField(choices=RANGE, default="1", max_length=30)
+  descripcion = models.TextField(max_length=250)
+  numero = models.CharField(choices=RANGE, default="1", max_length=30)
