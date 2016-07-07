@@ -9,7 +9,11 @@ class HospedajeForm(ModelForm):
 	direccion = forms.CharField(label="Dirección")
 	class Meta:
 	    model= Hospedaje
-	    exclude = ['customer', 'estado']
+	    exclude = ['customer', 'estado', 'favoritos']
+
+	    def __init__(self, *args, **kwargs):
+			super(HospedajeForm, self).__init__(*args, **kwargs)
+			self.fields['capacidad'].widget =forms.NumberInput(attrs={'min':0})
 
 class FotoForm(HospedajeForm):
 	foto_1 = forms.ImageField(required=False)

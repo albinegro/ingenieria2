@@ -14,4 +14,6 @@ urlpatterns = [
     url(r'^admin/add/types/$', views.add_type, name='add_type'),
     url(r'^admin/edit/types/(?P<type_id>\d+)/$', views.edit_type, name='edit_type'),
     url(r'^admin/delete/types/(?P<type_id>\d+)/$', views.delete_type, name='delete_type'),
+    url(r'^my/make/favorito/(?P<user_id>\d+)/(?P<hospe_id>\d+)/$', views.make_favorito, name='make_favorito'),
+    url(r'^my/favoritos/(?P<user_id>\d+)/$', views.my_favoritos, name='my_favoritos'),
 ]

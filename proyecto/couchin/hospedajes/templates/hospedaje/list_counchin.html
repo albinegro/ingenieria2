@@ -60,7 +60,11 @@
         <div class="col-sm-4 col-lg-4 col-md-4">
             <div class="thumbnail">
                 {% if user.admin or user.premium %}
-                    <img src="{{hospedaje.foto_1.url }}" alt="">
+                    {% if hospedaje.foto_1.url != None %}
+                        <img src="{{hospedaje.foto_1.url }}" alt="">
+                    {% else %}
+                        <img src="{% static 'img/default.png' %}" alt="">
+                    {% endif %}
                 {% else %}
                     <img src="{% static 'img/default.png' %}" alt="">
                 {% endif %}

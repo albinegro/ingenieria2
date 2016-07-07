@@ -8,6 +8,19 @@ from customers.models import Customer
 from .forms import *
 from .models import Reserva
 
+
+
+@login_required
+def cancelar_reserva(request,  hospe_id, rese_id,):
+	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
+	reserva = get_object_or_404(Reserva, id=rese_id)
+	if request.method == 'POST':
+		reserva.estado = "rechazada"
+		reserva.save()
+		return redirect(reverse("home:close_popup"))
+
+	return render(request, "reservas/cancelar_reserva.html")
+
 @login_required
 def view_calificacion(request, cali_id):
 	cali = get_object_or_404(Calificacion, id=cali_id)
@@ -100,21 +113,28 @@ def make_booking(request, hospe_id, user_id):
 		pass
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
 	customer = get_object_or_404(Customer, id=user_id)
+
 	if request.method == 'POST':
 		form = ReservaForm(request.POST,{"hospedaje":hospe_id})
-		if form.is_valid():
-			reserva = form.save(commit=False)
-			if form.cleaned_data.get("fecha_desde") > form.cleaned_data.get("fecha_hasta"):
-				reserva.fecha_desde = form.cleaned_data.get("fecha_hasta")
-				reserva.fecha_hasta = form.cleaned_data.get("fecha_desde")
-			reserva.inquilino = customer
-			reserva.dueno = hospedaje.customer
-			reserva.hospedaje = hospedaje
-			reserva.save()
-			return redirect(reverse("reservas:post_acept"))
+		if hospedaje.customer == request.user:
+			form.errors["fecha_desde"] = ["No se puede reservar tu mismo hospedaje"] 
+			form.errors["fecha_hasta"] = ["No se puede reservar tu mismo hospedaje"] 
+		else:
+			if form.is_valid():
+				reserva = form.save(commit=False)
+				if form.cleaned_data.get("fecha_desde") > form.cleaned_data.get("fecha_hasta"):
+					reserva.fecha_desde = form.cleaned_data.get("fecha_hasta")
+					reserva.fecha_hasta = form.cleaned_data.get("fecha_desde")
+				reserva.inquilino = customer
+				reserva.dueno = hospedaje.customer
+				reserva.hospedaje = hospedaje
+				reserva.save()
+				return redirect(reverse("reservas:post_acept"))
 	else:
+
 		form = ReservaForm()
-	if form.errors:
+	if form.errors and form.errors.get('__all__'):
+
 		if form.errors.get('__all__')[0] == 'Este rango de fechas ya esta reservada.':
 			form.errors["fecha_desde"] = ['Este rango de fechas ya esta reservado.']
 			form.errors["fecha_hasta"] = ['Este rango de fechas ya esta reservado.']
@@ -153,6 +173,10 @@ def my_rental(request, user_id):
 			hasta = datetime.strptime(request.GET.get('account_date_0'), '%Y-%m-%d').date()
 			desde = datetime.strptime(request.GET.get('account_date_1'), '%Y-%m-%d').date()
 		reservas = reservas.filter(fecha_desde__range=(desde,hasta),fecha_hasta__range=(desde,hasta))
+	elif 'account_date_0' in request.GET and 'account_date_1' in request.GET and  request.GET.get('account_date_0') and not request.GET.get('account_date_1'):
+		desde = datetime.strptime(request.GET.get('account_date_0'), '%Y-%m-%d').date()
+		hasta = desde + timedelta(days=2190)
+		reservas = reservas.filter(fecha_desde__range=(desde,hasta))
 
 
 	return render(request,"reservas/my_list_rental.html",{"reservas":reservas})

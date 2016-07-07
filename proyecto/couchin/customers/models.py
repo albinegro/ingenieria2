@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+import datetime
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, PermissionsMixin, User)
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-import datetime
+
 
 TIPOS_TARJETAS = (
 

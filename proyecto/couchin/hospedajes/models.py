@@ -1,15 +1,17 @@
 import os
 from django.db import models
 from customers.models import Customer
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 class Hospedaje(models.Model):
+	favoritos = models.ManyToManyField(Customer,blank=True, related_name="cus_favo")
 	customer  = models.ForeignKey(Customer)
 	titulo = models.CharField(max_length=250)
 	ciudad = models.CharField(max_length=250)
 	localidad = models.CharField(max_length=250)
 	direccion = models.CharField(max_length=250)
-	capacidad = models.IntegerField()
+	capacidad = models.IntegerField(validators=[MinValueValidator(1)])
 	tipo = models.ForeignKey('TipoHospedaje')
 	descripcion = models.TextField(max_length=250)
 	estado = models.BooleanField(default=True)

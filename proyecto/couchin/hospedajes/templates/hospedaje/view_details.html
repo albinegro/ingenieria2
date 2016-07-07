@@ -9,9 +9,61 @@
 			<div class="panel-body">
 
 				
-				  	<div class="col-xs-6 ">
-				      	    <img class="media-object " style="max-width: 95%;" src="{{ hospedaje.foto_1.url }}" alt="...">
-				  	</div>
+				  	<div class="col-xs-6">
+				  		 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+		                    <ol class="carousel-indicators">
+		                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+		                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+		                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+		                    </ol>
+					  		<div class="carousel-inner">
+					  		{% if hospedaje.foto_1%}
+		                        <div class="item active">
+		                            <img class="slide-image" style="max-width: 95%;" src="{{hospedaje.foto_1.url}}">
+		                        </div>
+		                    {% endif %}
+	                        {% if hospedaje.foto_2%}
+		                        <div class="item">
+		                            <img class="slide-image" style="max-width: 95%;" src="{{hospedaje.foto_2.url}}" alt="">
+		                        </div>
+	                        {% endif %}
+	                        {% if hospedaje.foto_3%}
+		                        <div class="item">
+		                            <img class="slide-image" style="max-width: 95%;" src="{{hospedaje.foto_3.url}}" alt="">
+		                        </div>
+	                        {% endif %}
+	                        {% if hospedaje.foto_4%}
+		                        <div class="item">
+		                            <img class="slide-image" style="max-width: 95%;" src="{{hospedaje.foto_4.url}}" alt="">
+		                        </div>
+	                        {% endif %}
+	                        {% if hospedaje.foto_5%}
+		                        <div class="item">
+		                            <img class="slide-image" style="max-width: 95%;" src="{{hospedaje.foto_5.url}}" alt="">
+		                        </div>
+	                        {% endif %}
+	                        {% if not hospedaje.foto_1 %}
+	                            {% if not hospedaje.foto_2 %}
+	                                {% if not hospedaje.foto_3 %}
+	                                    {% if not hospedaje.foto_4 %}
+	                                        {% if not hospedaje.foto_5 %}
+							                    <div class="item">
+											      	    <img class="media-object " style="max-width: 95%;" src="{% static 'img/default.png' %}" alt="...">
+											  	</div>
+											{% endif %}
+									    {% endif %}
+									{% endif %}
+							    {% endif %}
+							{% endif %}
+						    </div>
+						    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                  <span class="glyphicon glyphicon-chevron-left"></span>
+                           </a>
+		                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+		                        <span class="glyphicon glyphicon-chevron-right"></span>
+		                    </a>
+				        </div>
+				    </div>
 			        <div class="col-xs-6 ">
 					    <h4 class="media-heading">{{hospedaje.titulo}}</h4>
 					    <p>{{ hospedaje.descripcion }}</p>
@@ -25,6 +77,15 @@
 				      		
 				      	{% else %}
 				      	    <a class="btn btn-primary" href="{% url 'customers:login' %}">Reservar</a>
+				      	{% endif %}
+				      	{% if user in hospedaje.favoritos.all %}
+				      	    <a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
+					      		<span class="glyphicon glyphicon-heart"></span>
+					      	</a>
+				      	{% else %}
+					      	<a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
+					      		<span class="glyphicon glyphicon-heart-empty"></span>
+					      	</a>
 				      	{% endif %}
 					    <span class="glyphicon glyphicon-thumbs-up" style="color:green; margin-left:4px">80%</span>
 				  </div>

@@ -1,0 +1,33 @@
+{% extends 'user/menu_hospedaje.html' %}
+{% load bootstrap %}
+{% block menus %}
+        <h2>Mis Favoritos</h2>
+		 <table class="table">
+		    <thead>
+		      <tr>
+		        <th>Titulo</th>
+		        <th>Tipo</th>
+		        <th>Localidad</th>
+		        <th>Ciudad</th>
+		        <th>Acciones</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for hospedaje in favoritos %}
+			      <tr>
+			        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' hospedaje.id %}">{{ hospedaje.titulo }}</a></td>
+			        <td>{{ hospedaje.tipo.descripcion }}</td>
+			        <td>{{ hospedaje.localidad }}</td>
+			        <td>{{ hospedaje.ciudad }}</td>
+			        <td>
+			        	<a href="{% url 'hospedajes:view_detail' hospedaje.id %}" ><span class="glyphicon glyphicon-link"></span></a>
+			        </td>
+			    {% empty %}
+			      <tr>
+			          <td>No hay ningun favorito</td>
+			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+
+{% endblock menus %}

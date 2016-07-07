@@ -9,9 +9,33 @@ from django.views.decorators.csrf import csrf_exempt
 from core.libs import check_admin
 from django.db.models import Q
 import datetime
+
+
+@login_required
+def my_favoritos(request, user_id):
+	try:
+		if request.user.temp_pass:
+			logout(request)
+			return redirect(reverse("customers:login"))
+	except Exception:
+		pass
+	customer = get_object_or_404(Customer, id=user_id)
+	return render(request,"hospedaje/list_my_favoritos.html",{"favoritos":customer.cus_favo.all()})
+
+
 # Create your views here.
-
-
+@login_required
+def make_favorito(request, user_id, hospe_id):
+	customer = get_object_or_404(Customer,id=user_id)
+	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
+	try:
+		if  customer in hospedaje.favoritos.all() :
+			hospedaje.favoritos.remove(customer)
+		else:
+			hospedaje.favoritos.add(customer)
+	except Exception:
+		hospedaje.favoritos.add(customer)
+	return redirect(reverse("hospedajes:view_detail",kwargs={"hospe_id":hospedaje.id}))
 
 @login_required
 def info_booking(request,hospe_id):
@@ -120,7 +144,7 @@ def list_couchin(request):
 	except Exception:
 		pass
 
-	hospedaje = Hospedaje.objects.filter(estado=True)
+	hospedaje = Hospedaje.objects.filter(estado=True).exclude(tipo__activo=False)
 	if 'search_titulo' in request.GET and request.GET.get('search_titulo'):
 		hospedaje = hospedaje.filter(
 					Q(titulo__icontains=request.GET.get('search_titulo')) |

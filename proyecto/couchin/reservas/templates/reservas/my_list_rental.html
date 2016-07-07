@@ -58,6 +58,7 @@
 			        <td>
 			        	{% if reserva.estado == "pendiente" %}
 			        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:acept_reserva' reserva.hospedaje.id reserva.id %}">Aceptar</a>
+			        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:cancelar_reserva' reserva.hospedaje.id reserva.id %}">Rechazar</a>
 			        	{% endif %}
 			        	{% if reserva.estado == "aceptada" or reserva.estado == "finalizada"%}
                             {% if reserva.califica_dueno %}
