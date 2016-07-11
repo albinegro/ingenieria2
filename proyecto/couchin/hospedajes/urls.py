@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^admin/delete/types/(?P<type_id>\d+)/$', views.delete_type, name='delete_type'),
     url(r'^my/make/favorito/(?P<user_id>\d+)/(?P<hospe_id>\d+)/$', views.make_favorito, name='make_favorito'),
     url(r'^my/favoritos/(?P<user_id>\d+)/$', views.my_favoritos, name='my_favoritos'),
+    url(r'^my/responder/(?P<pregun_id>\d+)/$', views.responder, name='responder'),
 ]

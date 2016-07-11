@@ -8,6 +8,32 @@ from customers.models import Customer
 from .forms import *
 from .models import Reserva
 
+@login_required
+def list_calificacion_dueno(request, user_id):
+	customer = get_object_or_404(Customer, id=user_id)
+	reservas = Reserva.objects.filter(dueno=customer)
+	cali_inqui = []
+	cali_dueno = []
+	for reserva in reservas:
+		if reserva.califica_dueno:
+			cali_dueno.append(reserva.califica_dueno)
+		if reserva.califica_inquilino:
+			cali_inqui.append(reserva.califica_inquilino)
+	return render(request, "calificacion/list_cali_dueno.html", {"cali_inqui":cali_inqui, "cali_dueno":cali_dueno})
+
+
+@login_required
+def list_calificacion_inqui(request, user_id):
+	customer = get_object_or_404(Customer, id=user_id)
+	reservas = Reserva.objects.filter(inquilino=customer)
+	cali_inqui = []
+	cali_dueno = []
+	for reserva in reservas:
+		if reserva.califica_dueno:
+			cali_dueno.append(reserva.califica_dueno)
+		if reserva.califica_inquilino:
+			cali_inqui.append(reserva.califica_inquilino)
+	return render(request, "calificacion/list_cali_inqui.html", {"cali_inqui":cali_inqui, "cali_dueno":cali_dueno})
 
 
 @login_required
@@ -165,7 +191,17 @@ def my_rental(request, user_id):
 	except Exception:
 		pass
 	customer = get_object_or_404(Customer, id=user_id)
-	reservas = Reserva.objects.filter(dueno=customer,).exclude(estado="rechazada").order_by("-fecha_desde").order_by("-hospedaje__titulo")
+	reservas = Reserva.objects.filter(dueno=customer).order_by("-fecha_desde").order_by("-hospedaje__titulo")
+	for reserva in reservas:
+		if reserva.estado == 'pendiente'  and reserva.fecha_hasta < datetime.now().date():
+			reserva.estado = "rechazada"
+			reserva.save()
+		if reserva.estado == "aceptada" and reserva.fecha_hasta < datetime.now().date():
+			reserva.estado = "finalizada"
+			reserva.save()
+	reserva_final = reservas.filter(estado="finalizada")
+	reservas = reservas.exclude(estado="rechazada").exclude(estado="finalizada")
+
 	if 'account_date_0' in request.GET and 'account_date_1' in request.GET and  request.GET.get('account_date_0') and request.GET.get('account_date_1'):
 		desde = datetime.strptime(request.GET.get('account_date_0'), '%Y-%m-%d').date()
 		hasta = datetime.strptime(request.GET.get('account_date_1'), '%Y-%m-%d').date()
@@ -179,4 +215,4 @@ def my_rental(request, user_id):
 		reservas = reservas.filter(fecha_desde__range=(desde,hasta))
 
 
-	return render(request,"reservas/my_list_rental.html",{"reservas":reservas})
+	return render(request,"reservas/my_list_rental.html",{"reservas":reservas, "reserva_final":reserva_final })

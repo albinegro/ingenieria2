@@ -40,5 +40,16 @@ class Reserva(models.Model):
 		return False
 
 class Calificacion(models.Model):
-  descripcion = models.TextField(max_length=250)
-  numero = models.CharField(choices=RANGE, default="1", max_length=30)
+	descripcion = models.TextField(max_length=250)
+	numero = models.CharField(choices=RANGE, default="1", max_length=30)
+
+	def get_reserva_dueno(self):
+		print self.cal_dueno.all()
+		print "aver"
+		return self.cal_dueno.all()[0]
+
+	def get_reserva_inqui(self):
+		return self.cal_inquilino.all()[0]
+
+   
+

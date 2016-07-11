@@ -16,28 +16,78 @@
 		    </thead>
 		    <tbody>
 		    	{% for reserva in reservas %}
-			      <tr>
-			        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
-			        <td>{{ reserva.fecha_desde }}</td>
-			        <td>{{ reserva.fecha_hasta }}</td>
-			        <td>{{ reserva.estado }}</td>
-			        {% if reserva.estado == "aceptada" or reserva.estado == "finalizada" %}
-			        	<td><a href="{% url 'customers:info_user' reserva.dueno.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
-			        	<td>{% if reserva.califica_dueno %}
-                                <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+		    	  {% if not reserva.califica_inquilino or not reserva.califica_inquilino %}
+				      <tr>
+				        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
+				        <td>{{ reserva.fecha_desde }}</td>
+				        <td>{{ reserva.fecha_hasta }}</td>
+				        <td>{{ reserva.estado }}</td>
+				        {% if reserva.estado == "aceptada" or reserva.estado == "finalizada" %}
+				        	<td><a href="{% url 'customers:info_user' reserva.dueno.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
+				        	<td>{% if reserva.califica_dueno %}
+	                                <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
 
-			        		{% endif %}
-			        	</td>
-                        <td>{% if reserva.califica_inquilino %}
-                             <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="gglyphicon glyphicon-check"></span></a>
-			        	{% else %}
-			        	     {% if reserva.get_can_cali %}
-			        	   		 <a href="{% url 'reservas:make_calificacion_inquilino' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
-			        	   	 {% endif %}
-			        	{% endif %}</td>
-	                        
-                    {% endif %}
+				        		{% endif %}
+				        	</td>
+	                        <td>{% if reserva.califica_inquilino %}
+	                             <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="gglyphicon glyphicon-check"></span></a>
+				        	{% else %}
+				        	     {% if reserva.get_can_cali %}
+				        	   		 <a href="{% url 'reservas:make_calificacion_inquilino' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+				        	   	 {% endif %}
+				        	{% endif %}</td>
+		                        
+	                    {% endif %}
+				      </tr>
+				  {% endif %}
+				    
+			    {% empty %}
+			      <tr>
+			          <td>No hay ninguna reserva </td>
 			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+		 <h2>Historial</h2>
+		 <table class="table">
+		    <thead>
+		      <tr>
+		        <th>Hospedajes</th>
+		        <th>Desde</th>
+		        <th>Hasta</th>
+		        <th>Estado</th>
+		        <th>Dueño</th>
+		        <th>Calificación/Dueño</th>
+		        <th>Mi Calificación</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for reserva in reservas %}
+		    	  {% if reserva.califica_inquilino and reserva.califica_inquilino %}
+				      <tr>
+				        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
+				        <td>{{ reserva.fecha_desde }}</td>
+				        <td>{{ reserva.fecha_hasta }}</td>
+				        <td>{{ reserva.estado }}</td>
+				        {% if reserva.estado == "aceptada" or reserva.estado == "finalizada" %}
+				        	<td><a href="{% url 'customers:info_user' reserva.dueno.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
+				        	<td>{% if reserva.califica_dueno %}
+	                                <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+
+				        		{% endif %}
+				        	</td>
+	                        <td>{% if reserva.califica_inquilino %}
+	                             <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="gglyphicon glyphicon-check"></span></a>
+				        	{% else %}
+				        	     {% if reserva.get_can_cali %}
+				        	   		 <a href="{% url 'reservas:make_calificacion_inquilino' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+				        	   	 {% endif %}
+				        	{% endif %}</td>
+		                        
+	                    {% endif %}
+				      </tr>
+				  {% endif %}
+				    
 			    {% empty %}
 			      <tr>
 			          <td>No hay ninguna reserva </td>

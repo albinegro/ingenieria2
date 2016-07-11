@@ -12,5 +12,6 @@ urlpatterns = [
         url(r'^make/calification/inquilino/(?P<reserva_id>\d+)/$', views.make_calificacion_inquilino, name='make_calificacion_inquilino'),
         url(r'^make/calification/dueno/(?P<reserva_id>\d+)/$', views.make_calificacion_dueno, name='make_calificacion_dueno'),
         url(r'^view/calification/(?P<cali_id>\d+)/$', views.view_calificacion, name='view_calificacion'),
-
+        url(r'^list/calification/dueno/(?P<user_id>\d+)/$', views.list_calificacion_dueno, name='list_calificacion_dueno'),
+        url(r'^list/calification/inquilino/(?P<user_id>\d+)/$', views.list_calificacion_inqui, name='list_calificacion_inqui'),
 ]

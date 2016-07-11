@@ -1,0 +1,63 @@
+{% extends 'user/menu_hospedaje.html' %}
+{% load bootstrap %}
+{% block menus %}
+        <h2>Mis Calificación Inquilino</h2>
+		 <table class="table">
+		    <thead>
+		      <tr>
+		        <th>Hospedaje</th>
+		        <th>Fecha desde</th>
+		        <th>Fecha hasta</th>
+		        <th>Calificación</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for cali in cali_inqui %}
+				      <tr>
+				        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' cali.get_reserva_inqui.hospedaje.id %}">{{ cali.get_reserva_inqui.hospedaje.titulo }}</a></td>
+				        <td>{{ cali.get_reserva_inqui.fecha_desde }}</td>
+				        <td>{{ cali.get_reserva_inqui.fecha_hasta }}</td>
+				        <td>
+	                         <a href="{% url 'reservas:view_calificacion' cali.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+	                    </td>
+				      </tr>
+			    {% empty %}
+			      <tr>
+			          <td>No hay ninguna calificaciones </td>
+			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+		 <h2>Calificaciones Recibidas</h2>
+		 <table class="table">
+		    <thead>
+		      <tr>
+		        <th>Hospedajes</th>
+		        <th>Fecha desde</th>
+		        <th>Fecha hasta</th>
+		        <th>Dueño</th>
+		        <th>Calificación</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for cali in cali_dueno %}
+				      <tr>
+				        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' cali.get_reserva_dueno.hospedaje.id %}">{{ cali.get_reserva_dueno.hospedaje.titulo }}</a></td>
+				        <td>{{ cali.get_reserva_dueno.fecha_desde }}</td>
+				        <td>{{ cali.get_reserva_dueno.fecha_hasta }}</td>
+				        <td><a href="{% url 'customers:info_user' cali.get_reserva_dueno.dueno.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
+			        	<td>
+                             <a href="{% url 'reservas:view_calificacion' cali.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+			        	</td>
+	               
+				      </tr>
+				 
+				    
+			    {% empty %}
+			      <tr>
+			          <td>No hay ninguna calificaciones </td>
+			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+{% endblock menus %}

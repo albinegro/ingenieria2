@@ -4,12 +4,11 @@
 <div class="col-sm-3">
    <ul class="list-group">
 	  <a href="{% url 'hospedajes:my_hospedajes' user.id %}" class="list-group-item">Mis Hospedajes</a>
-	  <a class="list-group-item" href="#">Mis Estadias</a>
 	  <a class="list-group-item" href="{% url 'reservas:my_list_rental' user.id %}" >Mis Alquileres</a>
 	  <a class="list-group-item" href="{% url 'reservas:my_list_booking' user.id %}" >Mis Reservas</a>
 	  <a class="list-group-item" href="{% url 'hospedajes:my_favoritos' user.id %}" >Mis Favoritos</a>
-	  <a class="list-group-item" href="#" >Mis Calificaciones/Alquileres</a>
-	  <a class="list-group-item" href="#">Mis Calificaciones/Reservas</a>	
+	  <a class="list-group-item" href="{% url 'reservas:list_calificacion_dueno' user.id %}" >Mis Calificaciones/Dueño</a>
+	  <a class="list-group-item" href="{% url 'reservas:list_calificacion_inqui' user.id %}">Mis Calificaciones/Inquilino</a>	
     </ul>
 </div>
 <div class="col-sm-9">

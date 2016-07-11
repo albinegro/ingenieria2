@@ -1,5 +1,5 @@
-from .forms import TipoHospedajeForm, HospedajeForm
-from .models import TipoHospedaje, Hospedaje
+from .forms import TipoHospedajeForm, HospedajeForm, PreguntarForm, PreguntarEditForm
+from .models import TipoHospedaje, Hospedaje, Preguntar
 from customers.models import Customer
 from django.shortcuts import redirect, get_object_or_404, render
 from django.core.urlresolvers import reverse
@@ -9,6 +9,19 @@ from django.views.decorators.csrf import csrf_exempt
 from core.libs import check_admin
 from django.db.models import Q
 import datetime
+
+
+@login_required
+def responder(request,pregun_id):
+	pregunta = get_object_or_404(Preguntar, id=pregun_id)
+	if request.method == 'POST':
+		form = PreguntarEditForm(request.POST, instance=pregunta)
+		if form.is_valid():
+			form.save()
+			return redirect(reverse("home:close_popup"))
+	else:
+		form = PreguntarEditForm(instance=pregunta)
+	return render(request, "hospedaje/responder.html", {"form":form})
 
 
 @login_required
@@ -134,7 +147,18 @@ def view_detail(request, hospe_id):
 	except Exception:
 		pass
 	hospedaje = get_object_or_404(Hospedaje, id=hospe_id)
-	return render(request, "hospedaje/view_details.html",{"hospedaje": hospedaje})
+	if request.method == "POST":
+		form = PreguntarForm(request.POST)
+		if form.is_valid():
+			pregunta = form.save(commit=False)
+			pregunta.customer = request.user
+			pregunta.hospedaje = hospedaje
+			pregunta.save()
+			return redirect(reverse('hospedajes:view_detail',kwargs={"hospe_id":hospedaje.id}))
+	else:
+		form = PreguntarForm()
+	all_preguntas = Preguntar.objects.filter(hospedaje=hospedaje)
+	return render(request, "hospedaje/view_details.html",{"hospedaje": hospedaje, "form":form, "all_preguntas":all_preguntas})
 
 def list_couchin(request):
 	try:

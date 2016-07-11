@@ -29,9 +29,11 @@ class TipoHospedaje(models.Model):
 	def __str__(self):
 		return self.descripcion.encode('utf8')
 
-#class Comentario(models.Model):
-#	hospedaje = models.ForeignKey(Hospedaje)
-#	customer = models.ForeignKey(Customer)
-#	fecha = models.DateTimeField()
-#	pregunta = models.TextField()
-#	respuesta = models.TextField()
+
+
+class Preguntar(models.Model):
+	hospedaje = models.ForeignKey(Hospedaje)
+	customer = models.ForeignKey(Customer)
+	fecha = models.DateField(auto_now_add=True)
+	pregunta = models.TextField()
+	respuesta = models.TextField(null=True, blank=True)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.forms import ModelForm
-from .models import TipoHospedaje, Hospedaje
+from .models import TipoHospedaje, Hospedaje, Preguntar
 from django import forms
 
 class HospedajeForm(ModelForm):
@@ -39,5 +39,17 @@ class TipoHospedajeForm(ModelForm):
 		if TipoHospedaje.objects.filter(descripcion=descripcion).exists():
 			raise forms.ValidationError("Ya existe este tipo de hospedaje.")
 		return cleaned_data
+
+
+class PreguntarForm(ModelForm):
+	class Meta:
+		model = Preguntar
+		fields = ['pregunta']
+
+
+class PreguntarEditForm(ModelForm):
+	class Meta:
+		model = Preguntar
+		fields = ['respuesta']
 
 

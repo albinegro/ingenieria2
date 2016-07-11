@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from random import sample, choice
 from django.template.response import TemplateResponse
 from django.contrib.auth import  update_session_auth_hash
+from reservas.models import Reserva
 
 from django.contrib.auth.forms import PasswordChangeForm
 chars = string.letters + string.digits
@@ -98,7 +99,23 @@ def info_account(request,user_id):
 	except Exception:
 		pass
 	customer = get_object_or_404(Customer,id=user_id)
-	return render(request, "user/info_account.html",{'customer':customer})
+	reservas_due = Reserva.objects.filter(dueno=customer)
+	reservas_inqui = Reserva.objects.filter(inquilino=customer)
+	cont = 0
+	prom = 0
+	for reserva in reservas_due:
+		if reserva.califica_dueno:
+			cont = cont + 1
+			prom = prom + int(reserva.califica_dueno.numero)
+	range_dueno = prom / cont
+	cont = 0
+	prom = 0
+	for reserva in reservas_inqui:
+		if reserva.califica_inquilino:
+			cont = cont + 1
+			prom = prom + int(reserva.califica_inquilino.numero)
+	range_inqui = prom / cont
+	return render(request, "user/info_account.html",{'customer':customer, "range_inqui":range_inqui,"range_dueno":range_dueno})
 
 
 @login_required
@@ -110,7 +127,25 @@ def info_user(request,user_id):
 	except Exception:
 		pass
 	customer = get_object_or_404(Customer,id=user_id)
-	return render(request, "user/info_user.html",{'customer':customer})
+	reservas_due = Reserva.objects.filter(dueno=customer)
+	reservas_inqui = Reserva.objects.filter(inquilino=customer)
+	cont = 0
+	prom = 0
+	for reserva in reservas_due:
+		if reserva.califica_dueno:
+			cont = cont + 1
+			prom = prom + int(reserva.califica_dueno.numero)
+	range_dueno = prom / cont
+	cont = 0
+	prom = 0
+	for reserva in reservas_inqui:
+		if reserva.califica_inquilino:
+			cont = cont + 1
+			prom = prom + int(reserva.califica_inquilino.numero)
+	range_inqui = prom / cont
+
+
+	return render(request, "user/info_user.html",{'customer':customer, "range_inqui":range_inqui,"range_dueno":range_dueno})
 
 @login_required
 @csrf_exempt

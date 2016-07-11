@@ -78,72 +78,61 @@
 				      	{% else %}
 				      	    <a class="btn btn-primary" href="{% url 'customers:login' %}">Reservar</a>
 				      	{% endif %}
-				      	{% if user in hospedaje.favoritos.all %}
-				      	    <a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
-					      		<span class="glyphicon glyphicon-heart"></span>
-					      	</a>
-				      	{% else %}
-					      	<a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
-					      		<span class="glyphicon glyphicon-heart-empty"></span>
-					      	</a>
-				      	{% endif %}
+				      	{% if hospedaje.customer != user %}
+					      	{% if user in hospedaje.favoritos.all %}
+					      	    <a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
+						      		<span class="glyphicon glyphicon-heart"></span>
+						      	</a>
+					      	{% else %}
+						      	<a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
+						      		<span class="glyphicon glyphicon-heart-empty"></span>
+						      	</a>
+					      	{% endif %}
+					    {% endif %}
 					    <span class="glyphicon glyphicon-thumbs-up" style="color:green; margin-left:4px">80%</span>
 				  </div>
 
 		    </div>
 	</div>
-	<h3>Preguntas</h3>
-	<div>
-	    <textarea style="width: 912px; height: 78px;"></textarea>
-	    {% if user.premium or user.admin or user.client %}
-		    <a href="#" class="btn btn-primary">Comentar</a>	      		
-      	{% else %}
-      	    <a href="{% url 'customers:login' %}" class="btn btn-primary">Comentar</a>
-      	{% endif %}
-	     
-
-	</div>
+	{% if hospedaje.customer != user %}
+		<h3>Preguntar</h3>
+		<div>
+			<form action="." method="post">
+	            {% csrf_token %}
+	            {{ form|bootstrap }}
+	            <div class="form-group">
+	          		<button type="submit" class="btn btn-primary">Preguntar</button>
+	            </div>
+	        </form>
+		</div>
+    {% endif %}
     </br>
     </br>
-	<div class="panel panel-default">
-		    <div class="panel-heading">
-			    Pregunta #1
+    {% for pregunta in all_preguntas %}   
+		<div class="panel panel-default">
+			    <div class="panel-heading">
+				    Pregunta {{pregunta.fecha}}
+				</div>
+				<div class="panel-body">
+					<p>{{pregunta.customer.apellido}} {{pregunta.customer.nombre}}: {{pregunta.pregunta}}</p>
+		        </div>
+		</div>
+		{% if pregunta.respuesta %}
+			<div class="panel panel-default" style="margin-left: 70px;">
+				        <div class="panel-heading">
+						    Respuesta
+						</div>
+						<div class="panel-body">
+							<p>{{pregunta.respuesta}}</p>
+				        </div>
 			</div>
-			<div class="panel-body">
-				<p>-Robertito Funes: Tiene disponibilidad para la semana que viene?..</p>
-	        </div>
-	        <div class="panel-heading">
-			    Respuesta #1
-			</div>
-			<div class="panel-body">
-				<p>-Propietario: Para Que dia? Consulta las fechas disponibles de reservas saludos</p>
-	        </div>
-	</div>
-	</br>
-    <div class="panel panel-default">
-	        <div class="panel-heading">
-			    Pregunta #2
-			</div>
-			<div class="panel-body">
-				<p>-Carola Casini: Pueden entrar 4 personas?..</p>
-	        </div>
-	</div>
-	</br>
-    <div class="panel panel-default">
-	        <div class="panel-heading">
-			    Pregunta #3
-			</div>
-			<div class="panel-body">
-				<p>-Osvaldo Daniel: Aceptan pago con Tarjeta?..</p>
-	        </div>
-	        <div class="panel-heading">
-			    Respuesta #3
-			</div>
-			<div class="panel-body">
-				<p>-Propietario: No me gusta declarar mis impuestos, efectivo solamente. Saludos</p>
-	        </div>
-
-	</div>
+	    {% else %}
+	            {% if pregunta.hospedaje.customer == user %}
+		            <a href="{% url 'hospedajes:responder' pregunta.id %}" class="btn btn-primary open_modal" height-popup="50%">Responder</a>	     
+		        {% endif %}		
+		{% endif %}
+		</br>
+	{% endfor %}
 </div>
 
 {% endblock content %}

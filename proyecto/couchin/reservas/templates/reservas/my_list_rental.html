@@ -30,7 +30,7 @@
 	            </div>
 	        </div>
 	    </form>
-		 <table class="table">
+		<table class="table">
 		    <thead>
 		      <tr>
 		        <th>Hospedaje</th>
@@ -44,35 +44,86 @@
 		    </thead>
 		    <tbody>
 		    	{% for reserva in reservas %}
-			      <tr>
-			        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
-			        <td>{{ reserva.fecha_desde }}</td>
-			        <td>{{ reserva.fecha_hasta }}</td>
-			        <td><a href="{% url 'customers:info_user' reserva.inquilino.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
-			        <td>{{ reserva.estado }}</td>
-			        <td>{% if reserva.califica_inquilino %}
-                                <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+				      <tr>
+				        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
+				        <td>{{ reserva.fecha_desde }}</td>
+				        <td>{{ reserva.fecha_hasta }}</td>
+				        <td><a href="{% url 'customers:info_user' reserva.inquilino.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
+				        <td>{{ reserva.estado }}</td>
+				        <td>{% if reserva.califica_inquilino %}
+	                                <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
 
-			        		{% endif %}
-			        </td>
-			        <td>
-			        	{% if reserva.estado == "pendiente" %}
-			        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:acept_reserva' reserva.hospedaje.id reserva.id %}">Aceptar</a>
-			        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:cancelar_reserva' reserva.hospedaje.id reserva.id %}">Rechazar</a>
-			        	{% endif %}
-			        	{% if reserva.estado == "aceptada" or reserva.estado == "finalizada"%}
-                            {% if reserva.califica_dueno %}
-                                 <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="40%"><span class="glyphicon glyphicon-check"></span></a>
-				        	{% else %}
-				        	    {% if reserva.get_can_cali %}
-				        	    	<a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
-				        	    {% endif %}
+				        		{% endif %}
+				        </td>
+				        <td>
+				        	{% if reserva.estado == "pendiente" %}
+				        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:acept_reserva' reserva.hospedaje.id reserva.id %}">Aceptar</a>
+				        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:cancelar_reserva' reserva.hospedaje.id reserva.id %}">Rechazar</a>
 				        	{% endif %}
-	                        
-                        {% endif %}
-                        </a>
-			        </td>
-			     </tr>
+				        	{% if reserva.estado == "aceptada" or reserva.estado == "finalizada"%}
+	                            {% if reserva.califica_dueno %}
+	                                 <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="40%"><span class="glyphicon glyphicon-check"></span></a>
+					        	{% else %}
+					        	    {% if reserva.get_can_cali %}
+					        	    	<a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+					        	    {% endif %}
+					        	{% endif %}
+		                        
+	                        {% endif %}
+	                        </a>
+				        </td>
+				     </tr>
+			    {% empty %}
+			      <tr>
+			          <td>No hay ninguna reserva </td>
+			      </tr>
+			    {% endfor %}
+		    </tbody>
+		  </table>
+		<h2>Historial</h2>
+		<table class="table">
+		    <thead>
+		      <tr>
+		        <th>Hospedaje</th>
+		        <th>Desde</th>
+		        <th>Hasta</th>
+		        <th>Inquilino</th>
+		        <th>Estado</th>
+		        <th>Calificación/Inquilino</th>
+		        <th>Mi calificación</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		    	{% for reserva in reserva_final %}
+				      <tr>
+				        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
+				        <td>{{ reserva.fecha_desde }}</td>
+				        <td>{{ reserva.fecha_hasta }}</td>
+				        <td><a href="{% url 'customers:info_user' reserva.inquilino.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
+				        <td>{{ reserva.estado }}</td>
+				        <td>{% if reserva.califica_inquilino %}
+	                                <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+
+				        		{% endif %}
+				        </td>
+				        <td>
+				        	{% if reserva.estado == "pendiente" %}
+				        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:acept_reserva' reserva.hospedaje.id reserva.id %}">Aceptar</a>
+				        	     <a class="btn btn-primary open_modal" height-popup="20%" href="{% url 'reservas:cancelar_reserva' reserva.hospedaje.id reserva.id %}">Rechazar</a>
+				        	{% endif %}
+				        	{% if reserva.estado == "aceptada" or reserva.estado == "finalizada"%}
+	                            {% if reserva.califica_dueno %}
+	                                 <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="40%"><span class="glyphicon glyphicon-check"></span></a>
+					        	{% else %}
+					        	    {% if reserva.get_can_cali %}
+					        	    	<a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+					        	    {% endif %}
+					        	{% endif %}
+		                        
+	                        {% endif %}
+	                        </a>
+				        </td>
+				     </tr>
 			    {% empty %}
 			      <tr>
 			          <td>No hay ninguna reserva </td>
