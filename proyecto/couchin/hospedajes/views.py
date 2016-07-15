@@ -8,8 +8,30 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import csrf_exempt
 from core.libs import check_admin
 from django.db.models import Q
+from django.http import HttpResponse
 import datetime
 
+
+@login_required
+def have_preguntas(request):
+	customer = get_object_or_404(Customer, id=request.user.id)
+	all_pre = []
+	for hos in customer.hospedaje_set.all():
+		for pre in hos.preguntar_set.all():
+			if not pre.respuesta:
+				all_pre.append(pre)
+	count = len(all_pre)
+	return HttpResponse(count)
+
+@login_required
+def have_respuestas(request):
+	customer = get_object_or_404(Customer, id=request.user.id)
+	all_res = []
+	for pre in Preguntar.objects.all():
+		if pre.customer == customer and not pre.visto and pre.respuesta:
+			all_res.append(pre)
+	count = len(all_res)
+	return HttpResponse(count)
 
 @login_required
 def responder(request,pregun_id):
@@ -23,6 +45,27 @@ def responder(request,pregun_id):
 		form = PreguntarEditForm(instance=pregunta)
 	return render(request, "hospedaje/responder.html", {"form":form})
 
+@login_required
+def all_pregunta(request, user_id):
+	customer = get_object_or_404(Customer, id=request.user.id)
+	all_res = []
+	for pre in Preguntar.objects.all():
+		if pre.customer == customer and pre.respuesta:
+			all_res.append(pre)
+			pre.visto = True
+			pre.save()
+	return render(request, "hospedaje/all_preguntas.html", {"all_pre":all_res})
+
+
+@login_required
+def all_responder(request, user_id):
+	customer = get_object_or_404(Customer, id=user_id)
+	all_pre = []
+	for hos in customer.hospedaje_set.all():
+		for pre in hos.preguntar_set.all():
+			if not pre.respuesta:
+				all_pre.append(pre)
+	return render(request, "hospedaje/all_responder.html", {"all_pre":all_pre})
 
 @login_required
 def my_favoritos(request, user_id):
@@ -89,6 +132,7 @@ def edit_hospedaje(request,hospe_id):
 			return redirect(reverse("hospedajes:my_hospedajes",kwargs={"user_id":request.user.id}))
 	else:
 		form = HospedajeForm(instance=hospedaje)
+		form.fields["tipo"].queryset = TipoHospedaje.objects.filter(activo=True)
 	return render(request, "hospedaje/update_couchin.html", {"form":form})
 
 

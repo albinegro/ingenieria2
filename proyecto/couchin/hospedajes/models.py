@@ -2,6 +2,17 @@ import os
 from django.db import models
 from customers.models import Customer
 from django.core.validators import MinValueValidator
+RANGE = (
+		  (("1"),("1")),
+		  (("2"),("2")),
+		  (("3"),("3")),
+		  (("4"),("4")),
+		  (("5"),("5")),
+		  (("6"),("6")),
+		  (("7"),("7")),
+		  (("8"),("8")),
+		  (("9"),("9")),
+		  (("10"),("10")))
 
 # Create your models here.
 class Hospedaje(models.Model):
@@ -15,6 +26,7 @@ class Hospedaje(models.Model):
 	tipo = models.ForeignKey('TipoHospedaje')
 	descripcion = models.TextField(max_length=250)
 	estado = models.BooleanField(default=True)
+	calificacion = models.CharField(default='0',max_length=2, null=True, blank=True)
 	foto_1 = models.ImageField(upload_to='photos/', null=True, blank=True)
 	foto_2 = models.ImageField(upload_to='photos/', null=True, blank=True)
 	foto_3 = models.ImageField(upload_to='photos/', null=True, blank=True)
@@ -37,3 +49,4 @@ class Preguntar(models.Model):
 	fecha = models.DateField(auto_now_add=True)
 	pregunta = models.TextField()
 	respuesta = models.TextField(null=True, blank=True)
+	visto = models.BooleanField(default=False)

@@ -11,7 +11,7 @@ class ReservaForm(ModelForm):
 	fecha_hasta = forms.DateField(error_messages={'invalid':"Rango de fecha invalido"})
 	class Meta:
 		model = Reserva
-		exclude = ["hospedaje", "inquilino", "dueno", "estado", "visto"]
+		exclude = ["hospedaje", "inquilino", "dueno", "estado", "visto", "fecha_aceptada"]
 
 	def clean(self):
 		cleaned_data = super(ReservaForm, self).clean()

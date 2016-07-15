@@ -1,0 +1,36 @@
+{% extends 'user/menu_hospedaje.html' %}
+{% load bootstrap %}
+{% block menus %}
+<h2>Preguntas Respondias</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hospedaje</th>
+            <th>Respuesta</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pre in all_pre %}
+                <tr>
+                    <td>
+                       {{ pre.hospedaje.titulo }}
+                    </td>
+                    <td>
+                        {{pre.respuesta}}
+                    </td>
+                    <td>
+                         <a href="{% url 'hospedajes:view_detail' pre.hospedaje.id %}" class="btn btn-primary" >
+                          Ver </a>
+                    </td>
+                </tr>
+            
+        {% empty %}
+            <tr>
+                <td colspan="12">No hay preguntas respondidas</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock menus %}

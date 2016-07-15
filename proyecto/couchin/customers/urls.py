@@ -44,5 +44,7 @@ urlpatterns = [
     url(r'^info/account/(?P<user_id>\d+)/$', views.info_account, name='info_account'),
     url(r'^info/user/(?P<user_id>\d+)/$', views.info_user, name='info_user'),
     url(r'^admin/conf/$', views.admin_conf, name='admin_conf'),
+    url(r'^admin/listar/ganancia/$', views.listar_ganancia, name='listar_ganancia'),
+    url(r'^admin/listar/cant/usuario/$', views.listar_cant_usuario, name='listar_cant_usuario'),
 
 ]

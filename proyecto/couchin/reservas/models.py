@@ -26,6 +26,7 @@ STATE_RESERVA = ((("pendiente"), ("Pendiente")),
 class Reserva(models.Model):
 	hospedaje = models.ForeignKey(Hospedaje,related_name="imueble")
 	inquilino = models.ForeignKey(Customer,related_name="inquilino")
+	fecha_aceptada = models.DateField(blank=True, null=True)
 	dueno = models.ForeignKey(Customer, related_name="dueno")
 	estado = models.CharField(choices=STATE_RESERVA, default="pendiente", max_length=30)
 	fecha_desde = models.DateField()

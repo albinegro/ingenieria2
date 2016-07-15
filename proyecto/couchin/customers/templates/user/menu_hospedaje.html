@@ -9,6 +9,8 @@
 	  <a class="list-group-item" href="{% url 'hospedajes:my_favoritos' user.id %}" >Mis Favoritos</a>
 	  <a class="list-group-item" href="{% url 'reservas:list_calificacion_dueno' user.id %}" >Mis Calificaciones/Dueño</a>
 	  <a class="list-group-item" href="{% url 'reservas:list_calificacion_inqui' user.id %}">Mis Calificaciones/Inquilino</a>	
+	  <a class="list-group-item" href="{% url 'hospedajes:all_responder' user.id %}">Preguntas Para Responder</a>
+	  <a class="list-group-item" href="{% url 'hospedajes:all_pregunta' user.id %}">Preguntas Respondias</a>
     </ul>
 </div>
 <div class="col-sm-9">

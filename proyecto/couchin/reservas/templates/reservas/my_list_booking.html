@@ -24,16 +24,16 @@
 				        <td>{{ reserva.estado }}</td>
 				        {% if reserva.estado == "aceptada" or reserva.estado == "finalizada" %}
 				        	<td><a href="{% url 'customers:info_user' reserva.dueno.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
-				        	<td>{% if reserva.califica_dueno %}
-	                                <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+				        	<td>{% if reserva.califica_inquilino %}
+	                                <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
 
 				        		{% endif %}
 				        	</td>
-	                        <td>{% if reserva.califica_inquilino %}
-	                             <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="gglyphicon glyphicon-check"></span></a>
-				        	{% else %}
+	                        <td>{% if reserva.califica_dueno %}
+	                             <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="60%" ><span class="gglyphicon glyphicon-check"></span></a>
+				        	   {% else %}
 				        	     {% if reserva.get_can_cali %}
-				        	   		 <a href="{% url 'reservas:make_calificacion_inquilino' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+				        	   		 <a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
 				        	   	 {% endif %}
 				        	{% endif %}</td>
 		                        
@@ -71,16 +71,16 @@
 				        <td>{{ reserva.estado }}</td>
 				        {% if reserva.estado == "aceptada" or reserva.estado == "finalizada" %}
 				        	<td><a href="{% url 'customers:info_user' reserva.dueno.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-user"></span></a></td>
-				        	<td>{% if reserva.califica_dueno %}
-	                                <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
+				        	<td>{% if reserva.califica_inquilino %}
+	                                <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="glyphicon glyphicon-check"></span></a>
 
 				        		{% endif %}
 				        	</td>
-	                        <td>{% if reserva.califica_inquilino %}
-	                             <a href="{% url 'reservas:view_calificacion' reserva.califica_inquilino.id %}" class="open_modal" height-popup="60%" ><span class="gglyphicon glyphicon-check"></span></a>
-				        	{% else %}
+	                        <td>{% if reserva.califica_dueno %}
+	                             <a href="{% url 'reservas:view_calificacion' reserva.califica_dueno.id %}" class="open_modal" height-popup="60%" ><span class="gglyphicon glyphicon-check"></span></a>
+				        	   {% else %}
 				        	     {% if reserva.get_can_cali %}
-				        	   		 <a href="{% url 'reservas:make_calificacion_inquilino' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
+				        	   		 <a href="{% url 'reservas:make_calificacion_dueno' reserva.id %}" class="open_modal" height-popup="60%"><span class="glyphicon glyphicon-edit"></span></a>
 				        	   	 {% endif %}
 				        	{% endif %}</td>
 		                        

@@ -78,18 +78,20 @@
 				      	{% else %}
 				      	    <a class="btn btn-primary" href="{% url 'customers:login' %}">Reservar</a>
 				      	{% endif %}
-				      	{% if hospedaje.customer != user %}
-					      	{% if user in hospedaje.favoritos.all %}
-					      	    <a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
-						      		<span class="glyphicon glyphicon-heart"></span>
-						      	</a>
-					      	{% else %}
-						      	<a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
-						      		<span class="glyphicon glyphicon-heart-empty"></span>
-						      	</a>
-					      	{% endif %}
-					    {% endif %}
-					    <span class="glyphicon glyphicon-thumbs-up" style="color:green; margin-left:4px">80%</span>
+				      	{% if user.premium or user.admin or user.cliente %}
+					      	{% if hospedaje.customer != user %}
+						      	{% if user in hospedaje.favoritos.all %}
+						      	    <a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
+							      		<span class="glyphicon glyphicon-heart"></span>
+							      	</a>
+						      	{% else %}
+							      	<a href="{% url 'hospedajes:make_favorito' user.id hospedaje.id %}">
+							      		<span class="glyphicon glyphicon-heart-empty"></span>
+							      	</a>
+						      	{% endif %}
+						    {% endif %}
+						{% endif %}
+					    <span class="glyphicon glyphicon-thumbs-up" style="color:green; margin-left:4px">{{hospedaje.calificacion}}/10</span>
 				  </div>
 
 		    </div>
@@ -97,13 +99,18 @@
 	{% if hospedaje.customer != user %}
 		<h3>Preguntar</h3>
 		<div>
-			<form action="." method="post">
-	            {% csrf_token %}
-	            {{ form|bootstrap }}
-	            <div class="form-group">
-	          		<button type="submit" class="btn btn-primary">Preguntar</button>
-	            </div>
-	        </form>
+	            	
+	        {% if user.premium or user.admin or user.cliente %}
+				<form action="." method="post">
+		            {% csrf_token %}
+		            {{ form|bootstrap }}
+		            <div class="form-group">
+		          		    <button type="submit" class="btn btn-primary">Preguntar</button>
+		            </div>
+		        </form>
+      		{% else %}
+      		    <a href="{% url 'customers:login' %}"class="btn btn-primary">Preguntar</a>
+      		{% endif %}
 		</div>
     {% endif %}
     </br>
@@ -126,10 +133,6 @@
 							<p>{{pregunta.respuesta}}</p>
 				        </div>
 			</div>
-	    {% else %}
-	            {% if pregunta.hospedaje.customer == user %}
-		            <a href="{% url 'hospedajes:responder' pregunta.id %}" class="btn btn-primary open_modal" height-popup="50%">Responder</a>	     
-		        {% endif %}		
 		{% endif %}
 		</br>
 	{% endfor %}

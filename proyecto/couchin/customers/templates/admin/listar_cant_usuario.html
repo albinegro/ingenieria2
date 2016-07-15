@@ -1,0 +1,86 @@
+{% extends 'admin/menu_admin.html' %}
+{% load bootstrap %}
+{% block menus_admin %}
+<div>
+<h3>Lista De Reservas</h3>
+<div>
+ <form action="." method="get" id="menu-busqueda">
+ 	<div class="col-lg-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                     <input class=" form-control " id="id-date" name="date_0" type="text" placeholder="Desde">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker2'>
+                     <input class=" form-control " id="id-date" name="date_1" type="text" placeholder="Hasta">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-4 col-xs-12">
+            <div class="form-group order "> 
+                <button type="submit" class="btn btn-primary glyphicon glyphicon-search"> Buscar</button>
+            </div>
+        </div>
+</form>
+</div>
+<div>
+	     <div class="panel-body">
+         <table class="table">
+            <thead>
+              <tr>
+                <th>Hospedaje</th>
+                <th>Dueño</th>
+                <th>Inquilino</th>
+                <th>Fecha Aceptada</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                      <tr>
+                        <td><a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' reserva.hospedaje.id %}">{{ reserva.hospedaje.titulo }}</a></td>
+                        <td>{{ reserva.dueno.apellido }} {{ reserva.dueno.nombre }}</td>
+                        <td>{{ reserva.inquilino.apellido }} {{ reserva.inquilino.nombre }}</td>
+                        <td>{{ reserva.fecha_aceptada }}</td>
+                      </tr>
+                    
+                {% empty %}
+                  <tr>
+                      <td>No hay ninguna reserva </td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+            <hr>
+             <div class="row" >
+                <div class="col-xs-4">
+                    <h4>Total Reservas: {{total}}</h4>
+               </div>
+            </div>
+</div>
+<script type="text/javascript">
+         $(function () {
+            $('#datetimepicker1').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+            });
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+                viewMode: 'days',
+                format: 'YYYY-MM-DD',
+            });
+        });
+
+</script>
+
+{% endblock menus_admin %}

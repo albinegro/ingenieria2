@@ -2,9 +2,9 @@
 {% block content %}
 <div class="col-sm-3">
    <ul class="list-group">
-	  <a class="list-group-item" href="#" >Hospedajes</a>
 	  <a class="list-group-item" href="{% url 'hospedajes:list_type' %}" >Tipos De Hospedajes</a>
-	  <a href="#" class="list-group-item">Listar</a>	
+	  <a href="{% url 'customers:listar_ganancia' %}" class="list-group-item">Listar Ganancias</a>	
+	  <a href="{% url 'customers:listar_cant_usuario' %}" class="list-group-item">Listar Reservas</a>	
     </ul>
 </div>
 <div class="col-sm-9">

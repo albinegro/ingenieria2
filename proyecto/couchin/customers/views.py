@@ -18,6 +18,35 @@ from reservas.models import Reserva
 from django.contrib.auth.forms import PasswordChangeForm
 chars = string.letters + string.digits
 
+
+def listar_ganancia(request):
+	cantidad_u = 0
+	total = 0
+	customers = None
+	if 'date_0' in request.GET and 'date_1' in request.GET and  request.GET.get('date_0') and request.GET.get('date_1'):
+		desde = datetime.datetime.strptime(request.GET.get('date_0'), '%Y-%m-%d').date()
+		hasta = datetime.datetime.strptime(request.GET.get('date_1'), '%Y-%m-%d').date()
+		if desde > hasta:
+			hasta = datetime.datetime.strptime(request.GET.get('date_0'), '%Y-%m-%d').date()
+			desde = datetime.datetime.strptime(request.GET.get('date_1'), '%Y-%m-%d').date()
+		customers = Customer.objects.filter(premium=True,fecha_premium__range=(desde,hasta))	
+		cantidad_u = customers.count()
+	return render(request, "admin/listar_ganancia.html", {"cantidad_u":cantidad_u, "total":cantidad_u*80,"usuarios":customers})
+
+def listar_cant_usuario(request):
+	total = 0
+	reservas = None
+	if 'date_0' in request.GET and 'date_1' in request.GET and  request.GET.get('date_0') and request.GET.get('date_1'):
+		desde = datetime.datetime.strptime(request.GET.get('date_0'), '%Y-%m-%d').date()
+		hasta = datetime.datetime.strptime(request.GET.get('date_1'), '%Y-%m-%d').date()
+		if desde > hasta:
+			hasta = datetime.datetime.strptime(request.GET.get('date_0'), '%Y-%m-%d').date()
+			desde = datetime.datetime.strptime(request.GET.get('date_1'), '%Y-%m-%d').date()
+		reservas = Reserva.objects.filter(fecha_aceptada__range=(desde,hasta))
+		total = reservas.count()
+	return render(request, "admin/listar_cant_usuario.html", {"reservas":reservas, "total":total})
+
+
 @login_required
 def password_change(request,
 					template_name='registration/password_change_form.html',
@@ -105,16 +134,24 @@ def info_account(request,user_id):
 	prom = 0
 	for reserva in reservas_due:
 		if reserva.califica_dueno:
+			print reserva.califica_dueno.numero
+			print "miraaa"
 			cont = cont + 1
 			prom = prom + int(reserva.califica_dueno.numero)
-	range_dueno = prom / cont
+	try:
+		range_dueno = prom / cont
+	except Exception:
+		range_dueno = 0
 	cont = 0
 	prom = 0
 	for reserva in reservas_inqui:
 		if reserva.califica_inquilino:
 			cont = cont + 1
 			prom = prom + int(reserva.califica_inquilino.numero)
-	range_inqui = prom / cont
+	try:
+		range_inqui = prom / cont
+	except Exception:
+		range_inqui = 0
 	return render(request, "user/info_account.html",{'customer':customer, "range_inqui":range_inqui,"range_dueno":range_dueno})
 
 
@@ -135,14 +172,20 @@ def info_user(request,user_id):
 		if reserva.califica_dueno:
 			cont = cont + 1
 			prom = prom + int(reserva.califica_dueno.numero)
-	range_dueno = prom / cont
+	try:
+		range_dueno = prom / cont
+	except Exception:
+		range_dueno = 0
 	cont = 0
 	prom = 0
 	for reserva in reservas_inqui:
 		if reserva.califica_inquilino:
 			cont = cont + 1
 			prom = prom + int(reserva.califica_inquilino.numero)
-	range_inqui = prom / cont
+	try:
+		range_inqui = prom / cont
+	except Exception:
+		range_inqui = 0
 
 
 	return render(request, "user/info_user.html",{'customer':customer, "range_inqui":range_inqui,"range_dueno":range_dueno})

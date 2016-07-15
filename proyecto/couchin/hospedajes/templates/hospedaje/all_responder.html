@@ -1,0 +1,40 @@
+{% extends 'user/menu_hospedaje.html' %}
+{% load bootstrap %}
+{% block menus %}
+<h2>Preguntas Pendientes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hospedaje</th>
+            <th>Pregunta</th>
+            <th>Usuario</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pre in all_pre %}
+                <tr>
+                    <td>
+                       <a class="open_modal" height-popup="50%"href="{% url 'hospedajes:info_booking' pre.hospedaje.id %}">{{ pre.hospedaje.titulo }}</a>
+                    </td>
+                    <td>
+                        {{pre.pregunta}}
+                    </td>
+                    <td>
+                        {{pre.customer.apellido}} {{pre.customer.nombre}}
+                    </td>
+                    <td>
+                         <a href="{% url 'hospedajes:responder' pre.id %}" class="btn btn-primary open_modal" height-popup="50%">
+                          Responder </a>
+                    </td>
+                </tr>
+            
+        {% empty %}
+            <tr>
+                <td colspan="12">No hay preguntas para responder</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock menus %}

@@ -78,6 +78,13 @@ def make_calificacion_dueno(request, reserva_id):
 			cali.save()
 			reserva.califica_dueno = cali
 			reserva.save()
+			hos = reserva.hospedaje
+			if hos.calificacion == '0':
+				hos.calificacion = cali.numero
+			else:
+			    hos.calificacion = str((int(hos.calificacion) + int (cali.numero)) / 2)
+			hos.save() 
+			reserva.save()
 			return redirect(reverse("home:close_popup"))
 	else:
 		form = CalificacionForm()
@@ -107,6 +114,7 @@ def acept_reserva(request, hospe_id, rese_id):
 	reserva = get_object_or_404(Reserva, id=rese_id)
 	if request.method == 'POST':
 		reserva.estado = "aceptada"
+		reserva.fecha_aceptada = datetime.now().date()
 		reserva.save()
 		for rese in hospedaje.imueble.filter(estado="pendiente"):
 			if ((reserva.fecha_desde < rese.fecha_desde < reserva.fecha_hasta ) or 
@@ -179,8 +187,16 @@ def my_booking(request, user_id):
 	except Exception:
 		pass
 	customer = get_object_or_404(Customer, id=user_id)
+	reservas = Reserva.objects.filter(inquilino=customer)
+	for reserva in reservas:
+		if reserva.estado == 'pendiente'  and reserva.fecha_hasta < datetime.now().date():
+			reserva.estado = "rechazada"
+			reserva.save()
+		if reserva.estado == "aceptada" and reserva.fecha_hasta < datetime.now().date():
+			reserva.estado = "finalizada"
+			reserva.save()
 
-	return render(request,"reservas/my_list_booking.html",{"reservas":Reserva.objects.filter(inquilino=customer).order_by("-fecha_desde").order_by("-hospedaje__titulo")})
+	return render(request,"reservas/my_list_booking.html",{"reservas":reservas.order_by("-fecha_desde").order_by("-hospedaje__titulo")})
 
 
 def my_rental(request, user_id):

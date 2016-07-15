@@ -9,7 +9,7 @@ class HospedajeForm(ModelForm):
 	direccion = forms.CharField(label="Dirección")
 	class Meta:
 	    model= Hospedaje
-	    exclude = ['customer', 'estado', 'favoritos']
+	    exclude = ['customer', 'estado', 'favoritos', 'calificacion']
 
 	    def __init__(self, *args, **kwargs):
 			super(HospedajeForm, self).__init__(*args, **kwargs)

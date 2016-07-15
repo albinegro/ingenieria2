@@ -39,7 +39,7 @@
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             
-            <a class="navbar-brand" href="#">Hospedajes La Nirva</a>
+            <a class="navbar-brand" href="">Hospedajes La Nirva</a>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left" >
@@ -52,20 +52,25 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
 
-                    <li>
-                        <a href="#">Contacto</a>
-                    </li>
-                    <li>
-                        <a href="#">Acerca de</a>
-                    </li>
                     {% if user.is_authenticated %}
                         {% if user.admin %}
                             <li>
-                                <a href="{% url 'customers:admin_conf' %}">Configuración</a>
+                                <a href="{% url 'hospedajes:list_type' %}">Configuración</a>
                             </li>
                         {% endif %}
+                        <li class="res hidden">
+                            <a href="{% url 'hospedajes:all_responder' user.id %}">
+                                <span class="glyphicon glyphicon-comment"></span>
+                                <span class="badge respuesta">0</span>
+                            </a>
+                        </li>
+                         <li class="pre hidden">
+                            <a href="{% url 'hospedajes:all_pregunta' user.id %}">
+                                <span class="glyphicon glyphicon-share-alt"></span>
+                                <span class="badge pregunta">0</span>
+                            </a>
+                        </li>
                         <li>
-                           
                               <a class="dropdown-toggle" type="button" id="signin-user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <span>{{ user.nombre}} {{ user.apellido }}</span>
                                 <span class="glyphicon glyphicon-user"></span>
@@ -98,5 +103,26 @@
     </div>
     {% include 'popup.html' %}
 </body>
+<script type="text/javascript">
+$(document).ready(function() {
+  $.get("{% url 'hospedajes:have_preguntas' %}", function(response){
+       if(response > 0){
+            $(".res").removeClass("hidden");
+            $(".respuesta").html(response);
+        
+       }
+  }); 
+  $.get("{% url 'hospedajes:have_respuestas' %}", function(response){
+       if(response > 0){
+            $(".pre").removeClass("hidden");
+            $(".pregunta").html(response);
+        
+       }
+  }); 
+});
+
+
+
+</script>
 </html>
 

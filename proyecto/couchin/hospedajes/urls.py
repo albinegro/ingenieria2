@@ -17,4 +17,8 @@ urlpatterns = [
     url(r'^my/make/favorito/(?P<user_id>\d+)/(?P<hospe_id>\d+)/$', views.make_favorito, name='make_favorito'),
     url(r'^my/favoritos/(?P<user_id>\d+)/$', views.my_favoritos, name='my_favoritos'),
     url(r'^my/responder/(?P<pregun_id>\d+)/$', views.responder, name='responder'),
+    url(r'^all/responder/(?P<user_id>\d+)/$', views.all_responder, name='all_responder'),
+    url(r'^have/preguntas/$', views.have_preguntas, name='have_preguntas'),
+    url(r'^all/pregunta/(?P<user_id>\d+)/$', views.all_pregunta, name='all_pregunta'),
+    url(r'^have/respuestas/$', views.have_respuestas, name='have_respuestas'),
 ]
